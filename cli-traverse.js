@@ -15,11 +15,11 @@ const traverse = require("./traverse");
 const arg = require("./cli.args").cliArgs(process.argv);
 
 function search(arg) {
-
+    console.log(arg)
 }
 
 function traverser(arg) {
-
+    console.log(arg)
 }
 
 if (arg.includes("-s") || arg.includes("-sf") || arg.includes("-sffd") || arg.includes("--search")) {
