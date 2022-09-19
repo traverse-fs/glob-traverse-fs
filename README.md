@@ -7,7 +7,7 @@ Nodejs npm module to traverse folder using code or cli or use glob patterns
 
 #### Simple - Return Nested Array
 
-#### Simple - Return Single Level Array (folders seperated using '__')
+#### Simple - Return Single Level Array (folders separated using '__')
 
 #### Simple - Simple Search usage
 
