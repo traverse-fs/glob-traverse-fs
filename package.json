@@ -1,0 +1,38 @@
+{
+  "name": "fssys",
+  "version": "0.0.1",
+  "description": "Nodejs npm module to traverse folder using code or cli or use glob patterns traverse-cli or traverse-fs or fssys",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "traverse": "./cli-traverse.js",
+    "fsutils": "./cli-traverse.js",
+    "fst": "./cli-traverse.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganeshkbhat/glob-traverse-fs.git"
+  },
+  "keywords": [
+    "traverse",
+    "traverse files",
+    "traverse folders",
+    "search",
+    "search files",
+    "search folders",
+    "traverse-cli, traverse-fs, fssys"
+  ],
+  "author": "Ganesh K",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ganeshkbhat/glob-traverse-fs/issues"
+  },
+  "homepage": "https://github.com/ganeshkbhat/glob-traverse-fs#readme",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "sinon": "^14.0.0"
+  }
+}
