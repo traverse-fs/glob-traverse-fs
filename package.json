@@ -4,7 +4,7 @@
   "description": "Nodejs npm module to traverse folder using code or cli or use glob patterns traverse-cli or traverse-fs or fssys",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
   },
   "bin": {
     "traverse": "./cli-traverse.js",
