@@ -11,15 +11,45 @@
  * 
 */
 
+// import arg from 'arg';
+
+// function parseArgumentsIntoOptions(rawArgs) {
+//  const args = arg(
+//    {
+//      '--git': Boolean,
+//      '--yes': Boolean,
+//      '--install': Boolean,
+//      '-g': '--git',
+//      '-y': '--yes',
+//      '-i': '--install',
+//    },
+//    {
+//      argv: rawArgs.slice(2),
+//    }
+//  );
+//  return {
+//    skipPrompts: args['--yes'] || false,
+//    git: args['--git'] || false,
+//    template: args._[0],
+//    runInstall: args['--install'] || false,
+//  };
+// }
+
+// export function cli(args) {
+//  let options = parseArgumentsIntoOptions(args);
+//  console.log(options);
+// }
+
 const traverse = require("./traverse");
 const arg = require("./cli.args").cliArgs(process.argv);
 
+
 function search(arg) {
-    console.log(arg)
+    console.log("arg");
 }
 
 function traverser(arg) {
-    console.log(arg)
+    console.log("arg");
 }
 
 if (arg.includes("-s") || arg.includes("-sf") || arg.includes("-sffd") || arg.includes("--search")) {
