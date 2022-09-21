@@ -7,9 +7,9 @@
     "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
   },
   "bin": {
-    "traverse": "./cli-traverse.js",
-    "fsutils": "./cli-traverse.js",
-    "fst": "./cli-traverse.js"
+    "traverse": "./src/cli-traverse.js",
+    "fsutils": "./src/cli-traverse.js",
+    "fst": "./src/cli-traverse.js"
   },
   "repository": {
     "type": "git",

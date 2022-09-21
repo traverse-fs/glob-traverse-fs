@@ -6,205 +6,149 @@
  * Install: npm i 
  * Github: https://github.com/ganeshkbhat/glob-traverse-fs
  * npmjs Link: 
- * File: traverse.js
+ * File: test.traverse.folders.js
+ * Test for File: traverse.js
  * File Description: Traverse folder and files core file
  * 
 */
 
-var expect = require('chai').expect;
+const expect = require('chai').expect;
+const traverse = require("../src/traverse");
 
-describe('test.traverse.folders.js::traverse:fssys:traverse-cli: Test Suite for Traverse Folders', function() {
+describe('test.traverse.folders.js::traverse:fssys:traverse-cli: Test Suite for Traverse Folders', function () {
 
-    describe ('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test A] Test Suite for traversing folders in main repo directory', function() {
+    let resultSingleArray = [], resultSingleRecursiveArray = [], resultNestedArray = [], resultNestedRecursiveArray = [];
+    before(async function () {
+        resultSingleArray = await traverse.dir("./", false, traverse.callbacks.defaultFetch, false, traverse.callbacks.defaultErrorHandler, "flatarray");
+        resultSingleRecursiveArray = await traverse.dir("./", true, traverse.callbacks.defaultFetch, false, traverse.callbacks.defaultErrorHandler, "flatarray")
+        resultNestedArray = await traverse.dir("./", false, traverse.callbacks.defaultFetch, false, traverse.callbacks.defaultErrorHandler, "nestedarray");
+        resultNestedRecursiveArray = await traverse.dir("./", true, traverse.callbacks.defaultFetch, false, traverse.callbacks.defaultErrorHandler, "nestedarray");
+    });
+
+    describe('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test A] Test Suite for traversing folders in main repo directory', function () {
         // it('[Test A] package.json Present', function(done){
         //     expect(200).to.equal(200);
         //     done();
         // });
 
-        it('[Test A] Traverse file LICENSE in main directory', function(done) {
-            expect(100).to.equal(100);
+        it('[Test A] Traverse file LICENSE in main directory', function (done) {
+            expect(resultSingleArray.includes("LICENSE")).to.equal(true);
+            expect(resultSingleRecursiveArray.includes("LICENSE")).to.equal(true);
+            expect(resultNestedArray.includes("LICENSE")).to.equal(true);
+            expect(resultNestedRecursiveArray.includes("LICENSE")).to.equal(true);
             done();
         });
 
-        it('[Test A] Traverse file package.json in main directory', function(done) {
-            expect(100).to.equal(100);
+        it('[Test A] Traverse folder ./test in main directory', function (done) {
+            expect(!!resultSingleArray.includes("test")).to.equal(true);
+            expect(!!resultNestedArray.includes("test")).to.equal(true);
+
+            expect(!!resultSingleArray.find(value => /test/.test(value))).to.equal(true);
+            expect(resultSingleArray.filter(value => /test/.test(value)).length).to.greaterThan(0);
+
+            expect(!!resultNestedArray.find(value => /test/.test(value))).to.equal(true);
+            expect(resultNestedArray.filter(value => /test/.test(value)).length).to.greaterThan(0);
+
+            expect(!!resultSingleRecursiveArray.find(value => /test/.test(value))).to.equal(true);
+            expect(resultSingleRecursiveArray.filter(value => /test/.test(value)).length).to.greaterThan(0);
+
+            // expect(!!resultNestedRecursiveArray.find(value => /src\\/.test(value))).to.equal(true);
+            // expect(resultNestedRecursiveArray.filter(value => /src\\/.test(value)).length).to.equal(1);
             done();
         });
 
-        it('[Test A] Traverse file package-lock.json in main directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
+        it('[Test A] Traverse folder ./src in main directory', function (done) {
+            expect(resultSingleArray.includes("src")).to.equal(true);
+            expect(resultNestedArray.includes("src")).to.equal(true);
 
-        it('[Test A] Traverse folder ./node_modules in main directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
+            expect(!!resultSingleArray.find(value => /src/.test(value))).to.equal(true);
+            expect(resultSingleArray.filter(value => /src/.test(value)).length).to.greaterThan(0);
 
-        it('[Test A] Traverse folder ./test in main directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-    });
+            expect(!!resultNestedArray.find(value => /src/.test(value))).to.equal(true);
+            expect(resultNestedArray.filter(value => /src/.test(value)).length).to.greaterThan(0);
 
-    describe ('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test B] Test Suite for traversing and searching folders in main repo directory', function() {
-        // it('[Test B] status', function(done){
-        //     expect(200).to.equal(200);
-        //     done();
-        // });
+            expect(!!resultSingleRecursiveArray.find(value => /src/.test(value))).to.equal(true);
+            expect(resultSingleRecursiveArray.filter(value => /src/.test(value)).length).to.greaterThan(0);
 
-        it('[Test B] Search file LICENSE in main directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test B] Search file package.json in main directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test B] Search file package-lock.json in main directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test B] Search folder ./node_modules in main directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test B] Search folder ./test in main directory', function(done) {
-            expect(100).to.equal(100);
+            // expect(!!resultNestedRecursiveArray.find(value => /src\\/.test(value))).to.equal(true);
+            // expect(resultNestedRecursiveArray.filter(value => /src\\/.test(value)).length).to.equal(1);
             done();
         });
     });
 
-    describe ('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test C] Test Suite Recursive for traversing folders in subfolders of repo directory', function() {
+    describe('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test B] Test Suite Recursive for traversing folders in subfolders of repo directory', function () {
         // it('[Test C] status', function(done){
         //     expect(200).to.equal(200);
         //     done();
         // });
 
-        it('[Test C] Traverse file LICENSE in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
+        it('[Test C] Traverse folder src in subfolders of repo directory', function (done) {
+            for (let i = 0; i < resultNestedRecursiveArray.length; i++) {
+                if (Array.isArray(resultNestedRecursiveArray[i]) && resultNestedRecursiveArray[i][0].includes("src")) {
+                    expect(!!resultNestedRecursiveArray[i].find(value => /src\\/.test(value))).to.equal(true);
+                    expect(resultNestedRecursiveArray[i].filter(value => /src\\/.test(value)).length).to.greaterThan(0);
+                }
+            }
             done();
         });
 
-        it('[Test C] Traverse file package.json in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
+        it('[Test C] Traverse folder test in subfolders of repo directory', function (done) {
+            for (let i = 0; i < resultNestedRecursiveArray.length; i++) {
+                if (Array.isArray(resultNestedRecursiveArray[i]) && resultNestedRecursiveArray[i][0].includes("test")) {
+                    expect(!!resultNestedRecursiveArray[i].find(value => /test\\/.test(value))).to.equal(true);
+                    expect(resultNestedRecursiveArray[i].filter(value => /test\\/.test(value)).length).to.greaterThan(0);
+                }
+            }
             done();
         });
 
-        it('[Test C] Traverse file package-lock.json in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
+        it('[Test C] Traverse folder testmocks in test subfolders of repo directory', function (done) {
+            for (let i = 0; i < resultNestedRecursiveArray.length; i++) {
+                if (Array.isArray(resultNestedRecursiveArray[i])) {
+                    for (let j = 0; j < resultNestedRecursiveArray[i].length; j++) {
+                        if (Array.isArray(resultNestedRecursiveArray[i][j]) && resultNestedRecursiveArray[i][0].includes("testmocks")) {
+                            expect(!!resultNestedRecursiveArray[i][j].find(value => /test\\testmocks/.test(value))).to.equal(true);
+                            expect(resultNestedRecursiveArray[i][j].filter(value => /test\\testmocks/.test(value)).length).to.equal(1);
+                        }
+                    }
+                }
+            }
             done();
         });
 
-        it('[Test C] Traverse folder ./node_modules/.bin in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test C] Traverse folder ./node_modules/chai in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
     });
 
-    describe ('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test D] Test Suite Recursive for traversing and searching folders in main repo directory', function() {
-        // it('[Test D] status', function(done){
-        //     expect(200).to.equal(200);
-        //     done();
-        // });
+    // describe('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test C] Test Suite Negatives for traversing folders in main repo directory', function () {
+    //     // it('[Test E] status', function(done){
+    //     //     expect(200).to.equal(200);
+    //     //     done();
+    //     // });
 
-        it('[Test D] Traverse and Search file LICENSE in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
+    //     it('[Test E] Traverse file LICENSES not in subfolders of repo directory', function (done) {
+    //         expect(100).to.equal(100);
+    //         done();
+    //     });
 
-        it('[Test D] Traverse and Search file package.json in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
+    //     it('[Test E] Traverse file packages.json not in subfolders of repo directory', function (done) {
+    //         expect(100).to.equal(100);
+    //         done();
+    //     });
 
-        it('[Test D] Traverse and Search file package-lock.json in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
+    //     it('[Test E] Traverse file package-locks.json not in subfolders of repo directory', function (done) {
+    //         expect(100).to.equal(100);
+    //         done();
+    //     });
 
-        it('[Test D] Traverse and Search folder ./node_modules/.bin in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
+    //     it('[Test E] Traverse folder ./node_modules/.someotherthing not in subfolders of repo directory', function (done) {
+    //         expect(100).to.equal(100);
+    //         done();
+    //     });
 
-        it('[Test D] Traverse and Search folder ./node_modules/chai in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-    });
+    //     it('[Test E] Traverse folder ./node_modules/something not in subfolders of repo directory', function (done) {
+    //         expect(100).to.equal(100);
+    //         done();
+    //     });
+    // });
 
-    describe ('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test E] Test Suite Negatives for traversing folders in main repo directory', function() {
-        // it('[Test E] status', function(done){
-        //     expect(200).to.equal(200);
-        //     done();
-        // });
-
-        it('[Test E] Traverse file LICENSES not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test E] Traverse file packages.json not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test E] Traverse file package-locks.json not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test E] Traverse folder ./node_modules/.someotherthing not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test E] Traverse folder ./node_modules/something not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-    });
-
-    describe ('test.traverse.folders.js::traverse:fssys:traverse-cli: [Test F] Test Suite Negatives for traversing and searching folders in main repo directory', function() {
-        // it('[Test F] status', function(done){
-        //     expect(200).to.equal(200);
-        //     done();
-        // });
-
-        it('[Test F] Traverse and Search file LICENSES not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test F] Traverse and Search file packages.json not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test F] Traverse and Search file package-locks.json not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test F] Traverse and Search folder ./node_modules/.someotherthing not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-
-        it('[Test F] Traverse and Search folder ./node_modules/something not in subfolders of repo directory', function(done) {
-            expect(100).to.equal(100);
-            done();
-        });
-    });
 });
 

@@ -11,5 +11,5 @@
  * 
 */
 
-module.exports = require("./traverse");
+module.exports = require("./src/traverse");
 
