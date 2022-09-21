@@ -117,6 +117,7 @@ module.exports = {
     callbacks: {
         defaultFetch: defaultFetch,
         jsonFetch: defaultJSONFetch,
+        errorHandler: defaultErrorHandler,
         // search: searchCallback,
         // searchFiles: searchFilesCallback,
         // searchFolders: searchFoldersCallback

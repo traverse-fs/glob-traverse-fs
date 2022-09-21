@@ -96,6 +96,83 @@ TODO
 
 TODO
 
+#### API for traverse-fs / fssys
+
+
+
+- traverse.dir
+
+```
+
+```
+
+- traverse.returns
+
+    - traverse.returns.nestedArray
+
+```
+
+```
+
+    - traverse.returns.flatArray
+
+```
+
+```
+
+    - traverse.returns.json
+
+```
+
+```
+
+- traverse.callbacks
+
+    - traverse.callbacksdefaultFetch
+
+```
+
+```
+
+    - traverse.callbacks.jsonFetch
+
+```
+
+```
+
+    - traverse.callbacks.errorHandler
+
+```
+
+```
+
+- traverse.search
+
+    - traverse.search.all
+
+```
+
+```
+
+    - traverse.search.files
+
+```
+
+```
+
+    - traverse.search.folders
+
+```
+
+```
+
+- traverse.cliargs
+
+```
+
+```
+
+
 # Contribution
 
 Please feel to make contributions or raise issues to the repository by creating a pull request or [raising an issue](https://github.com/ganeshkbhat/glob-traverse-fs/issues)
