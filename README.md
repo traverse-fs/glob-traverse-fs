@@ -102,75 +102,43 @@ TODO
 
 - traverse.dir
 
-```
-
-```
 
 - traverse.returns
 
     - traverse.returns.nestedArray
 
-```
-
-```
 
     - traverse.returns.flatArray
 
-```
-
-```
 
     - traverse.returns.json
 
-```
-
-```
 
 - traverse.callbacks
 
     - traverse.callbacksdefaultFetch
 
-```
-
-```
 
     - traverse.callbacks.jsonFetch
 
-```
-
-```
 
     - traverse.callbacks.errorHandler
 
-```
-
-```
 
 - traverse.search
 
     - traverse.search.all
 
-```
-
-```
 
     - traverse.search.files
 
-```
-
-```
 
     - traverse.search.folders
 
-```
-
-```
 
 - traverse.cliargs
 
-```
 
-```
 
 
 # Contribution
