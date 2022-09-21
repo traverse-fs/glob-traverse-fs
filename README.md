@@ -21,10 +21,10 @@ You can use `traverse.dir` which by default traverses a single specified folder.
 
 var traverse = require("traverse-fs);
 var path = require("path");
-traverse.dir("./").then(console.log)
+traverse.dir("./").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
-traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }).then(console.log)
+traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }).then(console.log);
 
 ```
 
@@ -36,10 +36,10 @@ You can use the directory/ folder traversing and get a return of a nested array 
 
 var traverse = require("traverse-fs);
 var path = require("path");
-traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "nestedarray").then(console.log)
+traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "nestedarray").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
-traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "nestedarray").then(console.log)
+traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "nestedarray").then(console.log);
 
 ```
 
@@ -51,10 +51,10 @@ You can use the directory/ folder traversing and get a return of a single level 
 
 var traverse = require("traverse-fs);
 var path = require("path");
-traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "flatarray").then(console.log)
+traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "flatarray").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
-traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "flatarray").then(console.log)
+traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "flatarray").then(console.log);
 
 ```
 
@@ -64,10 +64,10 @@ traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, tr
 
 var traverse = require("traverse-fs);
 var path = require("path");
-traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "json").then(console.log)
+traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "json").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
-traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "json").then(console.log)
+traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "json").then(console.log);
 
 ```
 
