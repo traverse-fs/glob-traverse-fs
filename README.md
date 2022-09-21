@@ -1,6 +1,6 @@
-# glob-traverse-fs
+# traverse-fs
 
-Nodejs npm module to traverse folder using code or cli or use glob patterns
+Nodejs npm module to traverse files and folder using code, or cli, or use glob patterns
 
 `npm i traverse-fs --save`
 
