@@ -7,7 +7,8 @@ Nodejs npm module to traverse folder using code or cli or use glob patterns
 <!-- `npm i traverse-cli -g` -->
 <!-- `npm i traverse-cli --save` -->
 
-<!-- `npm i fssys --save` -->
+`npm i fssys --save`
+
 
 # Usage
 
