@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * 
  * Package: 
@@ -6,64 +7,54 @@
  * Install: npm i traverse-cli, npm i traverse-fs, npm i fssys
  * Github: https://github.com/ganeshkbhat/glob-traverse-fs
  * npmjs Link: 
- * File: cli-traverse.js
+ * File: cli.js
  * File Description: CLI Command file
  * 
 */
 
-// import arg from 'arg';
-
-// function parseArgumentsIntoOptions(rawArgs) {
-//  const args = arg(
-//    {
-//      '--git': Boolean,
-//      '--yes': Boolean,
-//      '--install': Boolean,
-//      '-g': '--git',
-//      '-y': '--yes',
-//      '-i': '--install',
-//    },
-//    {
-//      argv: rawArgs.slice(2),
-//    }
-//  );
-//  return {
-//    skipPrompts: args['--yes'] || false,
-//    git: args['--git'] || false,
-//    template: args._[0],
-//    runInstall: args['--install'] || false,
-//  };
-// }
-
-// export function cli(args) {
-//  let options = parseArgumentsIntoOptions(args);
-//  console.log(options);
-// }
-
-const traverse = require("./traverse");
-const arg = require("./cli.args").cliArgs(process.argv);
+const yargs = require("yargs");
+const sYargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+const config = require("./config.js");
 
 
-function search(arg) {
-    console.log("arg");
+let options = [];
+let k = Object.keys(config.options);
+for (let i = 0; i < k.length; i++) {
+    let o = {
+        "name": k[i],
+        ...config.options[k[i]]
+    };
+    options.push(o);
 }
 
-function traverser(arg) {
-    console.log("arg");
+var argv = sYargs(hideBin(process.argv));
+
+
+for (let j = 0; j < k.length; j++) {
+    argv.command(
+        k[j],
+        options[j].describe,
+        function (yargs) {
+            for (let l = 0; l < opts.positional.length; l++) {
+                let o = opts.positional[l];
+                argv.positional(o.name, { ...o.properties })
+            }
+            return yargs;
+        }.bind(null, opts = options[j]),
+        (!options[j].file["function"]) ? require(options[j].file.path) : require(options[j].file.path)[options[j].file.function])
 }
 
-if (arg.includes("-s") || arg.includes("-sf") || arg.includes("-sffd") || arg.includes("--search")) {
-    // -s : Traverse and Search files and folders
-    // --search : Traverse and Search files and folders
-    // -sf
-    // -sfd
-    search(arg);
-}
-
-if (arg.includes("-t") || arg.includes("-tf") || arg.includes("-tfd") || arg.includes("--traverse")) {
-    // -t : Traverse files and folders
-    // --traverse : Traverse files and folders
-    // -tf
-    // -tfd
-    traverser(arg);
-}
+argv.option('verbose', {
+    alias: 'v',
+    type: 'boolean',
+    description: 'Run with verbose'
+})
+    .usage("Usage: \n fst dir [dirname] \n fst search [dirname] [searchtext]")
+    .help('h')
+    .alias('h', 'help')
+    .epilog('traverse-cli: MIT License')
+    .showHelpOnFail(true)
+    .demandCommand(1, '')
+    .strict()
+    .parse()
