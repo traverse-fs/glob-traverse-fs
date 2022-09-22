@@ -69,8 +69,8 @@ function search(d, r, cb, pe, pef, type, options = { search: "all" }) {
 }
 
 module.exports = {
-    search: (d, r, cb = tfs.callbacks.searchFiles, pe, pef, type = "flatarray", options = { search: "all", text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
-    regex: (d, r, cb = tfs.callbacks.searchFiles, pe, pef, type = "flatarray", options = { regex: "all", pattern: null, text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
+    search: (d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { search: "all", text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
+    regex: (d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { regex: "all", pattern: null, text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
     callbacks: {
         search: searchCallback,
         searchFiles: searchFilesCallback,
