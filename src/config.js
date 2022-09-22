@@ -36,7 +36,7 @@ module.exports = {
                     "name": "searchtext",
                     "properties": {
                         "describe": "The relevant text to search",
-                        "default": "./"
+                        "default": ""
                     }
                 }
             ],
