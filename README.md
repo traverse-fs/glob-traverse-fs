@@ -9,7 +9,6 @@ Nodejs npm module to traverse files and folder using code, or cli, or use glob p
 
 `npm i fssys --save`
 
-
 # Usage
 
 The API of traverse-fs can be used to traverse a folder or its subfolders recursively.
@@ -98,48 +97,29 @@ TODO
 
 #### API for traverse-fs / fssys
 
-
-
 - traverse.dir
-
 
 - traverse.returns
 
-    - traverse.returns.nestedArray
+  - traverse.returnNestedArray
 
+  - traverse.returnFlatArray
 
-    - traverse.returns.flatArray
-
-
-    - traverse.returns.json
-
+  - traverse.returnJSON
 
 - traverse.callbacks
 
-    - traverse.callbacksdefaultFetch
+  - traverse.callbacks.defaultFetch
 
+  - traverse.callbacks.jsonFetch
 
-    - traverse.callbacks.jsonFetch
-
-
-    - traverse.callbacks.errorHandler
-
+  - traverse.callbacks.errorHandler
 
 - traverse.search
 
-    - traverse.search.all
-
-
-    - traverse.search.files
-
-
-    - traverse.search.folders
-
+- traverse.regex
 
 - traverse.cliargs
-
-
-
 
 # Contribution
 
