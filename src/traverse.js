@@ -30,31 +30,7 @@ const defaultJSONFetch = (d, f) => {
 };
 const defaultErrorHandler = (e) => console.log(e);
 
-const getRegExPattern = function (searchPattern, flag) {
-    if (typeof searchPattern === "string") {
-        return new RegExp(`${searchPattern}`, g);
-    }
-    return searchPattern;
-}
-
-const searchCallback = function (d, f, searchPattern, flag = undefined) {
-    searchPattern = getRegExPattern(searchPattern, flag);
-    return (searchPattern.match()) ? path.join(d, f.name) : false;
-}
-
-const searchFilesCallback = function (d, f, searchPattern, flag = undefined) {
-    searchPattern = getRegExPattern(searchPattern, flag);
-    if (!f.isFile()) return false;
-    return (searchPattern.match()) ? path.join(d, f.name) : false;
-}
-
-const searchFoldersCallback = function (d, f, searchPattern, flag = undefined) {
-    searchPattern = getRegExPattern(searchPattern, flag);
-    if (!f.isDir()) return false;
-    return (searchPattern.match()) ? path.join(d, f.name) : false;
-}
-
-async function getFiles(d, r = false, cb = defaultFetch, pe = false, pef = defaultErrorHandler, type = "nested") {
+async function getFilesFolders(d, r = false, cb = defaultFetch, pe = false, pef = defaultErrorHandler, type = "nestedarray") {
     var dir, result = [];
     try {
         dir = await fs.promises.opendir(d);
@@ -63,17 +39,18 @@ async function getFiles(d, r = false, cb = defaultFetch, pe = false, pef = defau
             while (f = dir.readSync()) {
                 try {
                     if (f.isFile()) {
-                        result.push(cb(d, f, null, null));
+                        item = cb(d, f, null, null);
+                        if (!!item) result.push(item);
                     } else {
                         if (!!r) {
                             if (type === "flatarray") {
-                                let cf = await getFiles(defaultFetch(d, f), r, cb, pe, pef, type);
+                                let cf = await getFilesFolders(defaultFetch(d, f), r, cb, pe, pef, type);
                                 result.push(...cf);
                             } else if (type === "json") {
-                                let cf = await getFiles(defaultFetch(d, f), r, cb, pe, pef, type);
+                                let cf = await getFilesFolders(defaultFetch(d, f), r, cb, pe, pef, type);
                                 result.push({ [f.name]: cf });
                             } else {
-                                let cf = await getFiles(defaultFetch(d, f), r, cb, pe, pef, type);
+                                let cf = await getFilesFolders(defaultFetch(d, f), r, cb, pe, pef, type);
                                 result.push(cf);
                             }
                         } else {
@@ -96,36 +73,23 @@ async function getFiles(d, r = false, cb = defaultFetch, pe = false, pef = defau
     }
 }
 
-function invoker(d, r, cb, pe, pef, type) { return getFiles(d, r, cb, pe, pef, type).then(result => result).catch(pef); };
-function searchFiles(d, r, cb = searchFilesCallback, pe, pef, type = "single") { return invoker(d, r, cb, pe, pef, type).then(res => res); };
-function searchFolders(d, r, cb = searchFoldersCallback, pe, pef, type = "single") { return invoker(d, r, cb, pe, pef, type).then(res => res); };
-function searchFilesFolders(d, r, cb = searchCallback, pe, pef, type = "single") { return invoker(d, r, cb, pe, pef, type).then(res => res); };
-function nestedArray(d, r, cb = defaultFetch, pe, pef, type = "nestedarray") { return invoker(d, r, cb, pe, pef, type).then(res => res) };
-function flatArray(d, r, cb = defaultFetch, pe, pef, type = "flatarray") { return invoker(d, r, cb, pe, pef, type).then(res => res) };
-function json(d, r, cb = defaultJSONFetch, pe, pef, type = "json") { return invoker(d, r, cb, pe, pef, type).then(res => res) };
+function invoke(d, r, cb, pe, pef, type) { return getFilesFolders(d, r, cb, pe, pef, type).then(result => result).catch(pef); };
+function nestedArray(d, r, cb = defaultFetch, pe, pef, type = "nestedarray") { return invoke(d, r, cb, pe, pef, type).then(res => res) };
+function flatArray(d, r, cb = defaultFetch, pe, pef, type = "flatarray") { return invoke(d, r, cb, pe, pef, type).then(res => res) };
+function json(d, r, cb = defaultJSONFetch, pe, pef, type = "json") { return invoke(d, r, cb, pe, pef, type).then(res => res) };
 
-// invoker("./", true, defaultFetch, false, defaultErrorHandler, "nestedarray").then(console.log)
-// invoker("./", true, defaultJSONFetch, false, defaultErrorHandler, "json").then(console.log)
+// invoke("./", true, defaultFetch, false, defaultErrorHandler, "nestedarray").then(console.log)
+// invoke("./", true, defaultJSONFetch, false, defaultErrorHandler, "json").then(console.log)
 
 module.exports = {
-    dir: invoker,
-    returns: {
-        nestedArray: nestedArray,
-        flatArray: flatArray,
-        json: json
-    },
+    dir: invoke,
+    returnNestedArray: nestedArray,
+    returnFlatArray: flatArray,
+    returnJSON: json,
     callbacks: {
         defaultFetch: defaultFetch,
         jsonFetch: defaultJSONFetch,
-        errorHandler: defaultErrorHandler,
-        // search: searchCallback,
-        // searchFiles: searchFilesCallback,
-        // searchFolders: searchFoldersCallback
+        errorHandler: defaultErrorHandler
     },
-    // search: {
-    //     all: searchFilesFolders,
-    //     files: searchFiles,
-    //     folders: searchFolders
-    // },
     cliargs: cliArgs
 }

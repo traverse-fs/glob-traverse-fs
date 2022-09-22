@@ -80,20 +80,20 @@ describe('test.traverse.files.js::traverse:fssys:traverse-cli: Test Suite for Tr
         //     done();
         // });
 
-        it('[Test B] Traverse files [ "src\\cli-traverse.js", "src\\cli.args.js", "src\\traverse.js" ] in src subfolders of repo directory', function (done) {
+        it('[Test B] Traverse files [ "src\\cli.js", "src\\cli.args.js", "src\\traverse.js" ] in src subfolders of repo directory', function (done) {
             expect(100).to.equal(100);
-            // [ 'src\\cli-traverse.js', 'src\\cli.args.js', 'src\\traverse.js' ],
+            // [ 'src\\cli.js', 'src\\cli.args.js', 'src\\traverse.js' ],
 
             for (let i = 0; i < resultNestedRecursiveArray.length; i++) {
                 if (Array.isArray(resultNestedRecursiveArray[i]) && resultNestedRecursiveArray[i][0].includes("src")) {
-                    expect(!!resultNestedRecursiveArray[i].find(value => /cli-traverse.js/.test(value))).to.equal(true);
-                    expect(resultNestedRecursiveArray[i].filter(value => /cli-traverse.js/.test(value)).length).to.equal(1);
+                    expect(!!resultNestedRecursiveArray[i].find(value => /cli.js/.test(value))).to.equal(true);
+                    expect(resultNestedRecursiveArray[i].filter(value => /cli.js/.test(value)).length).to.equal(1);
 
                     expect(!!resultNestedRecursiveArray[i].find(value => /cli.args.js/.test(value))).to.equal(true);
                     expect(resultNestedRecursiveArray[i].filter(value => /cli.args.js/.test(value)).length).to.equal(1);
 
                     expect(!!resultNestedRecursiveArray[i].find(value => /traverse.js/.test(value))).to.equal(true);
-                    expect(resultNestedRecursiveArray[i].filter(value => /traverse.js/.test(value)).length).to.equal(2);
+                    expect(resultNestedRecursiveArray[i].filter(value => /traverse.js/.test(value)).length).to.equal(1);
                 }
             }
             done();
@@ -163,8 +163,8 @@ describe('test.traverse.files.js::traverse:fssys:traverse-cli: Test Suite for Tr
         });
 
         it('[Test B] Traverse files in src subfolders of repo directory', function (done) {
-            expect(!!resultNestedRecursiveArray.find(value => /cli-traverse.js/.test(value))).to.equal(true);
-            expect(resultNestedRecursiveArray.filter(value => /cli-traverse.js/.test(value)).length).to.greaterThan(0);
+            expect(!!resultNestedRecursiveArray.find(value => /cli.js/.test(value))).to.equal(true);
+            expect(resultNestedRecursiveArray.filter(value => /cli.js/.test(value)).length).to.greaterThan(0);
             expect(!!resultNestedRecursiveArray.find(value => /cli.args.js/.test(value))).to.equal(true);
             expect(resultNestedRecursiveArray.filter(value => /cli.args.js/.test(value)).length).to.greaterThan(0);
             expect(!!resultNestedRecursiveArray.find(value => /traverse.js/.test(value))).to.equal(true);
