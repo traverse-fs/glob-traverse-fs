@@ -11,5 +11,18 @@
  * 
 */
 
-module.exports = require("./src/traverse");
+const tfs = require("./src/traverse");
+const search = require("./src/search");
+
+const callbacks = {
+    ...tfs.callbacks,
+    ...search.callbacks
+}
+
+
+module.exports = {
+    ...tfs,
+    ...search,
+    callbacks: callbacks
+};
 
