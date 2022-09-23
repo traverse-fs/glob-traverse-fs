@@ -13,11 +13,6 @@
     "install:cli": "npm install -g traverse-cli --force",
     "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
   },
-  "bin": {
-    "traverse": "./src/cli.js",
-    "fsutils": "./src/cli.js",
-    "fst": "./src/cli.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ganeshkbhat/glob-traverse-fs.git"
