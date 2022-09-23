@@ -3,8 +3,14 @@
   "version": "0.0.4",
   "description": "Nodejs npm module to traverse folder using code or cli or use glob patterns traverse-cli or traverse-fs or fssys",
   "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "init:cli": "npm install -g . --force",
+    "preinstall" : "", 
+    "install" : "", 
+    "postinstall" : "npm run init:cli", 
+    "init:cli": "npm install -g traverse-cli --force",
     "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
   },
   "bin": {
@@ -25,7 +31,7 @@
     "search folders",
     "traverse-cli, traverse-fs, fssys"
   ],
-  "author": "Ganesh K",
+  "author": "Ganesh Bhat",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ganeshkbhat/glob-traverse-fs/issues"
@@ -37,6 +43,6 @@
     "sinon": "^14.0.0"
   },
   "dependencies": {
-    "yargs": "^17.5.1"
+    
   }
 }

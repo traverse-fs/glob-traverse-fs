@@ -1,11 +1,11 @@
 PLANNED
+
     - Traverse directories single level or recursively
     - Return Result as flat array or nested array or json
     - Search Files and Folders based on text or regex
     - Return File properties
     - Run Callbacks on specific folders
     - Run Callbacks on specific files
-    - Add CLI feature to the library
 
 TODO
 
@@ -13,4 +13,4 @@ TODO
     - Return File properties
     - Run Callbacks on specific folders
     - Run Callbacks on specific files
-    - Add CLI feature to the library
+
