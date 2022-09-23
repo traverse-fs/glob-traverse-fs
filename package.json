@@ -29,9 +29,9 @@
   "author": "Ganesh Bhat",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ganeshkbhat/glob-traverse-fs/issues"
+    "url": "https://github.com/traverse-fs/glob-traverse-fs/issues"
   },
-  "homepage": "https://github.com/ganeshkbhat/glob-traverse-fs#readme",
+  "homepage": "https://github.com/traverse-fs/glob-traverse-fs#readme",
   "devDependencies": {
     "chai": "^4.3.6",
     "mocha": "^10.0.0",
