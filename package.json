@@ -9,8 +9,8 @@
   "scripts": {
     "preinstall" : "", 
     "install" : "", 
-    "postinstall" : "npm run init:cli", 
-    "init:cli": "npm install -g traverse-cli --force",
+    "postinstall" : "", 
+    "install:cli": "npm install -g traverse-cli --force",
     "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
   },
   "bin": {
