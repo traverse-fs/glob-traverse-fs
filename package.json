@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "preinstall" : "", 
-    "install" : "", 
-    "postinstall" : "", 
+    "preinstall": "",
+    "install": "",
+    "postinstall": "",
     "install:cli": "npm install -g traverse-cli --force",
     "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
   },
@@ -35,9 +35,7 @@
   "devDependencies": {
     "chai": "^4.3.6",
     "mocha": "^10.0.0",
-    "sinon": "^14.0.0"
-  },
-  "dependencies": {
-    
+    "sinon": "^14.0.0",
+    "unimported": "^1.22.0"
   }
 }
