@@ -97,29 +97,118 @@ TODO
 
 #### API for traverse-fs / fssys
 
+
 - traverse.dir
 
-- traverse.returns
+Usage:
+```
 
-  - traverse.returnNestedArray
+    require("traverse-fs").dir(
+      directory = "./", 
+      recursive = false, 
+      fetchModifierCallback = defaultFetch, 
+      handleProcessExit = false, 
+      errorHandler = defaultErrorHandler, 
+      returnType = "nestedarray"
+    )
 
-  - traverse.returnFlatArray
+```
 
-  - traverse.returnJSON
+- traverse.returnNestedArray
+
+Usage:
+
+```
+
+    require("traverse-fs").returnNestedArray(
+      directory = "./", 
+      recursive = false, 
+      fetchModifierCallback = defaultFetch, 
+      handleProcessExit = false, 
+      errorHandler = defaultErrorHandler, 
+      type = "nestedarray"
+    )
+
+```
+
+- traverse.returnFlatArray
+
+Usage:
+
+```
+
+    require("traverse-fs").returnFlatArray(
+      directory = "./", 
+      recursive = false, 
+      fetchModifierCallback = defaultFetch, 
+      handleProcessExit = false, 
+      errorHandler = defaultErrorHandler, 
+      type = "flatarray"
+    )
+
+```
+
+- traverse.returnJSON
+
+Usage:
+
+```
+
+    require("traverse-fs").returnJSON(
+      directory = "./", 
+      recursive = false, 
+      fetchModifierCallback = defaultFetch, 
+      handleProcessExit = false, 
+      errorHandler = defaultErrorHandler, 
+      type = "json"
+    )
+
+```
 
 - traverse.callbacks
+Usage for traverse.callbacks API
 
   - traverse.callbacks.defaultFetch
 
+Default Implementation:
+
+```
+
+  (directory, fileDirent) => path.join(directory, fileDirent.name)
+
+```
+
   - traverse.callbacks.jsonFetch
 
+Default Implementation:
+
+```
+
+  (directory, fileDirent) => {
+      if ((os.type() === "Windows_NT") && fileDirent.name.includes("\\")) {
+          return path.join(fileDirent.name.split("\\").at(-1));
+      }
+      return path.join(fileDirent.name.split("/").at(-1))
+  }
+
+```
+
   - traverse.callbacks.errorHandler
+
+Default Implementation:
+
+```
+
+  (error) => console.log(error)
+
+```
 
 - traverse.search
 
 - traverse.regex
 
 - traverse.cliargs
+
 
 # Contribution
 

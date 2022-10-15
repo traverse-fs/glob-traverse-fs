@@ -52,21 +52,25 @@ const searchFoldersCallback = function (d, f, searchPattern, flag = undefined) {
 
 // function tfs.dir(d, r, cb, pe, pef, type) { return getFiles(d, r, cb, pe, pef, type).then(result => result).catch(pef); };
 
-function searchFiles(d, r, cb = searchFilesCallback, pe, pef, type = "flatarray") { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
-function searchFolders(d, r, cb = searchFoldersCallback, pe, pef, type = "flatarray") { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
-function searchFilesFolders(d, r, cb = searchCallback, pe, pef, type = "flatarray") { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
+function searchFiles(d, r, cb = searchFilesCallback, pe, pef, type = "flatarray", options = { search: "files", text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
+function searchFolders(d, r, cb = searchFoldersCallback, pe, pef, type = "flatarray", options = { search: "folders", text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
+function searchFilesFolders(d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { search: "all", text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
 
-tfs.dir("./", true, searchFoldersCallback, false, tfs.callbacks.errorHandler, "flatarray").then(console.log)
+function regexFiles(d, r, cb = searchFilesCallback, pe, pef, type = "flatarray", options = { regex: "files", pattern: null, text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
+function regexFolders(d, r, cb = searchFoldersCallback, pe, pef, type = "flatarray", options = { regex: "folders", pattern: null, text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
+function regexFilesFolders(d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { regex: "all", pattern: null, text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
+
+
+// tfs.dir("./", true, searchFoldersCallback, false, tfs.callbacks.errorHandler, "flatarray").then(console.log)
 
 function search(d, r, cb, pe, pef, type, options = { search: "all" }) {
-    // search: "all" | "filesfolder" | "folder"
-    // regex: "all" | "filesfolder" | "folder"
-
+    // search: "all" | "files" | "folder"
+    // regex: "all" | "files" | "folder"
 }
 
 module.exports = {
-    search: (d, r, cb = tfs.callbacks.searchFiles, pe, pef, type = "flatarray", options = { search: "all", text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
-    regex: (d, r, cb = tfs.callbacks.searchFiles, pe, pef, type = "flatarray", options = { regex: "all", regex: new RegExp("", "g") }) => { return search(d, r, cb, pe, pef, type, options) },
+    search: (d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { search: "all", text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
+    regex: (d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { regex: "all", pattern: null, text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
     callbacks: {
         search: searchCallback,
         searchFiles: searchFilesCallback,

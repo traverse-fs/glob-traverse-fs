@@ -1,19 +1,21 @@
 {
   "name": "traverse-fs",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Nodejs npm module to traverse folder using code or cli or use glob patterns traverse-cli or traverse-fs or fssys",
   "main": "index.js",
-  "scripts": {
-    "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
+  "directories": {
+    "test": "test"
   },
-  "bin": {
-    "traverse": "./src/cli.js",
-    "fsutils": "./src/cli.js",
-    "fst": "./src/cli.js"
+  "scripts": {
+    "preinstall": "",
+    "install": "",
+    "postinstall": "",
+    "install:cli": "npm install -g traverse-cli --force",
+    "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ganeshkbhat/glob-traverse-fs.git"
+    "url": "git+https://github.com/traverse-fs/glob-traverse-fs.git"
   },
   "keywords": [
     "traverse",
@@ -24,15 +26,16 @@
     "search folders",
     "traverse-cli, traverse-fs, fssys"
   ],
-  "author": "Ganesh K",
+  "author": "Ganesh Bhat",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ganeshkbhat/glob-traverse-fs/issues"
+    "url": "https://github.com/traverse-fs/glob-traverse-fs/issues"
   },
-  "homepage": "https://github.com/ganeshkbhat/glob-traverse-fs#readme",
+  "homepage": "https://github.com/traverse-fs/glob-traverse-fs#readme",
   "devDependencies": {
     "chai": "^4.3.6",
     "mocha": "^10.0.0",
-    "sinon": "^14.0.0"
+    "sinon": "^14.0.0",
+    "unimported": "^1.22.0"
   }
 }

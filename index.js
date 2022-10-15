@@ -10,7 +10,9 @@
  * File Description: Get CLI Arguments function
  * 
 */
+/* eslint no-console: 0 */
 
+'use strict';
 const tfs = require("./src/traverse");
 const search = require("./src/search");
 
