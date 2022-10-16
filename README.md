@@ -101,12 +101,13 @@ TODO
 - traverse.dir
 
 Usage:
+
 ```
 
-    require("traverse-fs").dir(
+    traverse.dir(
       directory = "./", 
       recursive = false, 
-      fetchModifierCallback = defaultFetch, 
+      fetchModifierCallback = traverse.defaultFetch, 
       handleProcessExit = false, 
       errorHandler = defaultErrorHandler, 
       returnType = "nestedarray"
@@ -120,12 +121,12 @@ Usage:
 
 ```
 
-    require("traverse-fs").returnNestedArray(
+    traverse.returnNestedArray(
       directory = "./", 
       recursive = false, 
-      fetchModifierCallback = defaultFetch, 
+      fetchModifierCallback = traverse.defaultFetch, 
       handleProcessExit = false, 
-      errorHandler = defaultErrorHandler, 
+      errorHandler = traverse.defaultErrorHandler, 
       type = "nestedarray"
     )
 
@@ -140,9 +141,9 @@ Usage:
     require("traverse-fs").returnFlatArray(
       directory = "./", 
       recursive = false, 
-      fetchModifierCallback = defaultFetch, 
+      fetchModifierCallback = traverse.defaultFetch, 
       handleProcessExit = false, 
-      errorHandler = defaultErrorHandler, 
+      errorHandler = traverse.defaultErrorHandler, 
       type = "flatarray"
     )
 
@@ -157,16 +158,19 @@ Usage:
     require("traverse-fs").returnJSON(
       directory = "./", 
       recursive = false, 
-      fetchModifierCallback = defaultFetch, 
+      fetchModifierCallback = traverse.jsonFetch, 
       handleProcessExit = false, 
-      errorHandler = defaultErrorHandler, 
+      errorHandler = traverse.defaultErrorHandler, 
       type = "json"
     )
 
 ```
 
 - traverse.callbacks
-Usage for traverse.callbacks API
+Usage for traverse.callbacks Function APIs.
+
+While the structure of the callback returns have to be the same, you can run your own modifier functions on the files and folders as needed.
+This allows for changing the files, or folder contents or run any jobs on them, if needed.
 
   - traverse.callbacks.defaultFetch
 
