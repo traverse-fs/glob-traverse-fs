@@ -1,16 +1,16 @@
 PLANNED
 
-    - Traverse directories single level or recursively
-    - Return Result as flat array or nested array or json
-    - Search Files and Folders based on text or regex
-    - Return File properties
-    - Run Callbacks on specific folders
-    - Run Callbacks on specific files
+    - [D] Traverse directories single level or recursively
+    - [D] Return Result as flat array or nested array or json
+    - [] Search Files and Folders based on text or regex
+    - [] Return File properties
+    - [D] Run Callbacks on specific folders
+    - [D] Run Callbacks on specific files
+    - [] Search and Traverse concurrently
 
 TODO
 
-    - Search Files and Folders based on text or regex
-    - Return File properties
-    - Run Callbacks on specific folders
-    - Run Callbacks on specific files
+    - [] Search Files and Folders based on text or regex
+    - [] Return File properties
+    - [] Search and Traverse concurrently
 
