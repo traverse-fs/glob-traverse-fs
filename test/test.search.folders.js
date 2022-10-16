@@ -3,12 +3,12 @@
 //  * Package: 
 //  * Author: Ganesh B
 //  * Description: Nodejs npm module to traverse folder using code or cli or use glob patterns
-//  * Install: npm i 
+//  * Install: npm i traverse-fs, npm i fssys 
 //  * Github: https://github.com/ganeshkbhat/glob-traverse-fs
 //  * npmjs Link: 
-//  * File: test.search.folders.js
+//  * File: test/test.search.folders.js
 //  * Test for File: traverse.js
-//  * File Description: Traverse folder and files core file
+//  * File Description: Test file for Traversing and searching folders in a directory
 //  * 
 // */
 
@@ -19,8 +19,8 @@
 
 //     let resultSingleArray, resultNestedArray;
 //     before(async function(){
-//         resultSingleArray = await traverse.dir("./", true, (d, f) => { return path.join(d, f.name); }, false, (e) => { console.log(e) }, "single");
-//         resultNestedArray = await traverse.dir("./", true, (d, f) => { return path.join(d, f.name); }, false, (e) => { console.log(e) }, "nested");
+//         resultSingleArray = await traverse.dir("./", true, (d, f) => { return path.join(d, f.name); }, false, (e) => { console.log(e) }, "flatarray");
+//         resultNestedArray = await traverse.dir("./", true, (d, f) => { return path.join(d, f.name); }, false, (e) => { console.log(e) }, "nestedarray");
 //     });
 
 //     describe ('test.search.folders.js::traverse:fssys:traverse-cli: [Test A] Test Suite for traversing and searching folders in main repo directory', function() {

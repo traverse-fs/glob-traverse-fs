@@ -3,12 +3,12 @@
 //  * Package: 
 //  * Author: Ganesh B
 //  * Description: Nodejs npm module to traverse folder using code or cli or use glob patterns
-//  * Install: npm i 
+//  * Install: npm i traverse-fs, npm i fssys 
 //  * Github: https://github.com/ganeshkbhat/glob-traverse-fs
 //  * npmjs Link: 
-//  * File: test.args.js
+//  * File: test/.__.template.test.traverse.js
 //  * Test for File: traverse.js
-//  * File Description: Traverse folder and files core file
+//  * File Description: Test template file for Traversing and searching files in a directory
 //  * 
 // */
 
