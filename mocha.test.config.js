@@ -24,5 +24,13 @@ module.exports = {
         './test/**/test.*.js',
         './test/**/**/test.*.js',
         './test/**/**/**/test.*.js',
+        './test/*.test.mjs',
+        './test/**/*.test.mjs',
+        './test/**/**/*.test.mjs',
+        './test/**/**/**/*.test.mjs',
+        './test/test.*.mjs',
+        './test/**/test.*.mjs',
+        './test/**/**/test.*.mjs',
+        './test/**/**/**/test.*.mjs',
     ],
 };
