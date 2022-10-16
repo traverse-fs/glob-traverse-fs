@@ -246,6 +246,8 @@ traverse.dir(
 
 - traverse.search
 
+- traverse.filter
+
 - traverse.regex
 
 - traverse.cliargs

@@ -49,7 +49,6 @@ const searchFoldersCallback = function (d, f, searchPattern, flag = undefined) {
     return (r.test(path.join(d, f.name).toString())) ? path.join(d, f.name) : false;
 }
 
-
 // function tfs.dir(d, r, cb, pe, pef, type) { return getFiles(d, r, cb, pe, pef, type).then(result => result).catch(pef); };
 
 function searchFiles(d, r, cb = searchFilesCallback, pe, pef, type = "flatarray", options = { search: "files", text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
@@ -60,16 +59,17 @@ function regexFiles(d, r, cb = searchFilesCallback, pe, pef, type = "flatarray",
 function regexFolders(d, r, cb = searchFoldersCallback, pe, pef, type = "flatarray", options = { regex: "folders", pattern: null, text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
 function regexFilesFolders(d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { regex: "all", pattern: null, text: [] }) { return tfs.dir(d, r, cb, pe, pef, type).then(res => res); };
 
-
 // tfs.dir("./", true, searchFoldersCallback, false, tfs.callbacks.errorHandler, "flatarray").then(console.log)
 
 function search(d, r, cb, pe, pef, type, options = { search: "all" }) {
     // search: "all" | "files" | "folder"
     // regex: "all" | "files" | "folder"
+    throw new Error(`[ERROR] search.js: \nNOT IMPLEMENTED. TODO FOR NEXT MINOR VERSION. \n YOU CAN RUN SEARCH AND FILTER YOUR OWN FILES AND FOLDERS USING YOUR CUSTOM CALLBACK FUNCTIONS.`);
 }
 
 module.exports = {
     search: (d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { search: "all", text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
+    filter: (d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { search: "all", text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
     regex: (d, r, cb = searchCallback, pe, pef, type = "flatarray", options = { regex: "all", pattern: null, text: [] }) => { return search(d, r, cb, pe, pef, type, options) },
     callbacks: {
         search: searchCallback,
