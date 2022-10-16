@@ -244,13 +244,13 @@ traverse.dir(
 
 ```
 
-- traverse.search
+- traverse.search [TODO]
 
-- traverse.filter
+- traverse.filter [TODO]
 
-- traverse.regex
+- traverse.regex [TODO]
 
-- traverse.cliargs
+- traverse.cliargs [TODO]
 
 # Contribution
 
