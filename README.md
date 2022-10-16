@@ -207,8 +207,9 @@ Default Implementation:
 
 ```
 
-While the structure of the callback's returns have to be the same (the file-folder path join names), you can run your own modifier functions on the files and folders as needed and ensure return of file-folder path join names.
-This allows for changing the files, or folder contents or run any jobs on them, if needed.
+While the structure of the callback's returns have to be the same (the file-folder path join names), you can run your own modifier functions on the files and folders as needed and ensure return of file-folder path join names. This allows for changing the files, or folder contents or run any jobs on them, if needed. You can allow for running your own before and after callbacks inside your custom callback functions as needed. It will depend on how you create your custom callback function.
+
+You can also run your own before and after callbacks before traversing or after traversing the files and folders.
 
 Example:
 You can use your own callbacks, modifiers, custom jobs, etc like below:
@@ -216,9 +217,17 @@ You can use your own callbacks, modifiers, custom jobs, etc like below:
 ```
 
 functon cb(directory, fileDirent){
+
   function modifierFunction(d, f) {
-    /* Your own modifiers, Running custom functions on files or folders, etc. */
+
+    specifyBeforeCallback();
+
+    /* Your own modifiers, Running custom functions on files or folders, etc. code here*/
+
+    specifyAfterCallback();
+
   }
+
   modifierFunction(directory, fileDirent);
   return path.join(directory, fileDirent.name);
 }
