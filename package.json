@@ -1,6 +1,6 @@
 {
   "name": "traverse-fs",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Nodejs npm module to traverse folder using code or cli or use glob patterns traverse-cli or traverse-fs or fssys",
   "main": "index.js",
   "directories": {
