@@ -73,7 +73,12 @@ async function getFilesFolders(d, r = false, cb = defaultFetch, pe = false, pef 
     }
 }
 
-function invoke(directory, recursive, fetchModifierCallback, handleProcessExit, errorHandler, type, options = { before: () => { }, after: () => { } }) { before(); let result = getFilesFolders(directory, recursive, fetchModifierCallback, handleProcessExit, errorHandler, type, options).then(res => res).catch(errorHandler); after(); return result; };
+function invoke(directory, recursive, fetchModifierCallback, handleProcessExit, errorHandler, type, options = { before: () => { }, after: () => { } }) { 
+    if (!!options.before) options.before();
+    let result = getFilesFolders(directory, recursive, fetchModifierCallback, handleProcessExit, errorHandler, type, options).then(res => res).catch(errorHandler);
+    if (!!options.after) options.after(); 
+    return result; 
+};
 function nestedArray(directory, recursive, fetchModifierCallback = defaultFetch, handleProcessExit, errorHandler, type = "nestedarray", options) { return invoke(directory, recursive, fetchModifierCallback, handleProcessExit, errorHandler, type, options).then(res => res) };
 function flatArray(directory, recursive, fetchModifierCallback = defaultFetch, handleProcessExit, errorHandler, type = "flatarray", options) { return invoke(directory, recursive, fetchModifierCallback, handleProcessExit, errorHandler, type, options).then(res => res) };
 function json(directory, recursive, fetchModifierCallback = defaultJSONFetch, handleProcessExit, errorHandler, type = "json", options) { return invoke(directory, recursive, fetchModifierCallback, handleProcessExit, errorHandler, type, options).then(res => res) };
