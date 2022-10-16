@@ -8,7 +8,7 @@ PLANNED
     - [D] Run Callbacks on specific files
     - [T] Search and Traverse concurrently
     - [T] Add filter function (along with search) folders and files while traversing; using traversing and searching technique both
-    - [T] Segregate traversing functionality into different function to allow isolation to traverse objects/ json objects
+    - [T] Seperate traversing functionality into different function to allow isolation to traverse objects/ json objects
 
 TODO
 
@@ -17,5 +17,5 @@ TODO
     - [] Return File properties
     - [] Search and Traverse concurrently
     - [] Add filter function (along with search) folders and files while traversing; using traversing and searching technique both
-    - [] Segregate traversing functionality into different function to allow isolation to traverse objects/ json objects
+    - [] Seperate traversing functionality into different function to allow isolation to traverse objects/ json objects
 
