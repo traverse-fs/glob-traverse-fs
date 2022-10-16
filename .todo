@@ -9,6 +9,7 @@ PLANNED
     - [T] Search and Traverse concurrently
     - [T] Add filter function (along with search) folders and files while traversing; using traversing and searching technique both
     - [T] Seperate traversing functionality into different function to allow isolation to traverse objects/ json objects
+    - [T] Support ES Module - write ES wrapper
 
 TODO
 
@@ -18,4 +19,5 @@ TODO
     - [] Search and Traverse concurrently
     - [] Add filter function (along with search) folders and files while traversing; using traversing and searching technique both
     - [] Seperate traversing functionality into different function to allow isolation to traverse objects/ json objects
+    - [] Support ES Module - write ES wrapper
 

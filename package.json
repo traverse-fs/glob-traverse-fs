@@ -6,6 +6,10 @@
   "directories": {
     "test": "test"
   },
+  "exports": {
+    "require": "./index.js",
+    "import": "./index.mjs"
+  },
   "scripts": {
     "preinstall": "",
     "install": "",
