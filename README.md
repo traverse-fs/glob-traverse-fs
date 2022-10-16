@@ -97,80 +97,80 @@ TODO
 
 #### API for traverse-fs / fssys
 
-
 - traverse.dir
 
-Usage:
+Usage with their default implementations:
 
 ```
 
     traverse.dir(
-      directory = "./", 
-      recursive = false, 
-      fetchModifierCallback = traverse.defaultFetch, 
-      handleProcessExit = false, 
-      errorHandler = defaultErrorHandler, 
-      returnType = "nestedarray"
+      directory = "./",
+      recursive = false,
+      fetchModifierCallback = traverse.defaultFetch,
+      handleProcessExit = false,
+      errorHandler = traverse.defaultErrorHandler,
+      type = "nestedarray",
+      options = { before: () => { }, after: () => { } }
     )
 
 ```
 
 - traverse.returnNestedArray
 
-Usage:
+Usage with their default implementations:
 
 ```
 
     traverse.returnNestedArray(
-      directory = "./", 
-      recursive = false, 
-      fetchModifierCallback = traverse.defaultFetch, 
-      handleProcessExit = false, 
-      errorHandler = traverse.defaultErrorHandler, 
-      type = "nestedarray"
+      directory = "./",
+      recursive = false,
+      fetchModifierCallback = traverse.defaultFetch,
+      handleProcessExit = false,
+      errorHandler = traverse.defaultErrorHandler,
+      type = "nestedarray",
+      options = { before: () => { }, after: () => { } }
     )
 
 ```
 
 - traverse.returnFlatArray
 
-Usage:
+Usage with their default implementations:
 
 ```
 
-    require("traverse-fs").returnFlatArray(
-      directory = "./", 
-      recursive = false, 
-      fetchModifierCallback = traverse.defaultFetch, 
-      handleProcessExit = false, 
-      errorHandler = traverse.defaultErrorHandler, 
-      type = "flatarray"
+    traverse.returnFlatArray(
+      directory = "./",
+      recursive = false,
+      fetchModifierCallback = traverse.defaultFetch,
+      handleProcessExit = false,
+      errorHandler = traverse.defaultErrorHandler,
+      type = "flatarray",
+      options = { before: () => { }, after: () => { } }
     )
 
 ```
 
 - traverse.returnJSON
 
-Usage:
+Usage with their default implementations:
 
 ```
 
-    require("traverse-fs").returnJSON(
-      directory = "./", 
-      recursive = false, 
-      fetchModifierCallback = traverse.jsonFetch, 
-      handleProcessExit = false, 
-      errorHandler = traverse.defaultErrorHandler, 
-      type = "json"
+    traverse.returnJSON(
+      directory = "./",
+      recursive = false,
+      fetchModifierCallback = traverse.jsonFetch,
+      handleProcessExit = false,
+      errorHandler = traverse.defaultErrorHandler,
+      type = "json",
+      options = { before: () => { }, after: () => { } }
     )
 
 ```
 
 - traverse.callbacks
-Usage for traverse.callbacks Function APIs.
-
-While the structure of the callback returns have to be the same, you can run your own modifier functions on the files and folders as needed.
-This allows for changing the files, or folder contents or run any jobs on them, if needed.
+  Usage for traverse.callbacks Function APIs.
 
   - traverse.callbacks.defaultFetch
 
@@ -182,7 +182,7 @@ Default Implementation:
 
 ```
 
-  - traverse.callbacks.jsonFetch
+- traverse.callbacks.jsonFetch
 
 Default Implementation:
 
@@ -197,7 +197,7 @@ Default Implementation:
 
 ```
 
-  - traverse.callbacks.errorHandler
+- traverse.callbacks.errorHandler
 
 Default Implementation:
 
@@ -207,12 +207,39 @@ Default Implementation:
 
 ```
 
+While the structure of the callback's returns have to be the same (the file-folder path join names), you can run your own modifier functions on the files and folders as needed and ensure return of file-folder path join names.
+This allows for changing the files, or folder contents or run any jobs on them, if needed.
+
+Example:
+You can use your own callbacks, modifiers, custom jobs, etc like below:
+
+```
+
+functon cb(directory, fileDirent){
+  function modifierFunction(d, f) {
+    /* Your own modifiers, Running custom functions on files or folders, etc. */
+  }
+  modifierFunction(directory, fileDirent);
+  return path.join(directory, fileDirent.name);
+}
+
+traverse.dir(
+      directory = "./",
+      recursive = false,
+      fetchModifierCallback = cb,
+      handleProcessExit = false,
+      errorHandler = traverse.defaultErrorHandler,
+      type = "nestedarray",
+      options = { before: () => { }, after: () => { } }
+    )
+
+```
+
 - traverse.search
 
 - traverse.regex
 
 - traverse.cliargs
-
 
 # Contribution
 
