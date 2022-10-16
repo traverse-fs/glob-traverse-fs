@@ -2,15 +2,20 @@ PLANNED
 
     - [D] Traverse directories single level or recursively
     - [D] Return Result as flat array or nested array or json
-    - [] Search Files and Folders based on text or regex
-    - [] Return File properties
+    - [T] Search Files and Folders based on text or regex
+    - [T] Return File properties
     - [D] Run Callbacks on specific folders
     - [D] Run Callbacks on specific files
-    - [] Search and Traverse concurrently
+    - [T] Search and Traverse concurrently
+    - [T] Add filter function (along with search) folders and files while traversing; using traversing and searching technique both
+    - [T] Segregate traversing functionality into different function to allow isolation to traverse objects/ json objects
 
 TODO
 
     - [] Search Files and Folders based on text or regex
+    - [] Add filter function (along with search) folders and files while traversing; using traversing and searching technique both
     - [] Return File properties
     - [] Search and Traverse concurrently
+    - [] Add filter function (along with search) folders and files while traversing; using traversing and searching technique both
+    - [] Segregate traversing functionality into different function to allow isolation to traverse objects/ json objects
 
