@@ -118,9 +118,14 @@
   },
   "homepage": "https://github.com/traverse-fs/glob-traverse-fs#readme",
   "devDependencies": {
+    "@types/node": "^18.11.9",
     "chai": "^4.3.6",
-    "mocha": "^10.0.0",
-    "sinon": "^14.0.0",
+    "hpp": "^0.2.3",
+    "mocha": "^10.1.0",
+    "nsp": "^3.2.1",
+    "nsp-api": "^1.0.3",
+    "safe-regex": "^2.1.1",
+    "sinon": "^14.0.1",
     "unimported": "^1.22.0"
   }
 }
