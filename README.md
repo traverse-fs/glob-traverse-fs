@@ -144,7 +144,7 @@ TODO -->
 
 <br/>
 
-- `traverse.dir` Usage Default implementations:
+- `traverse.dir` Usage and Default implementations:
 
 ```
     traverse.dir(
