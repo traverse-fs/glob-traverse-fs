@@ -30,7 +30,7 @@ traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }).th
 
 #### Simple - Return Nested Array
 
-You can use the directory/ folder traversing and get a return of a nested array (array of arrays) as the result.
+You can use the directory/ folder traversing and get a `return of a nested array (array of arrays)` as the result.
 
 ```
 
@@ -45,7 +45,7 @@ traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, tr
 
 #### Simple - Return Single Level Array
 
-You can use the directory/ folder traversing and get a return of a single level array as the result. The result will have the complete path of the file in case the file being in the sub directory.
+You can use the directory/ folder traversing and get a `return of a single level array` as the result. The result will have the complete path of the file in case the file being in the sub directory.
 
 ```
 
@@ -59,6 +59,8 @@ traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, tr
 ```
 
 #### Simple - Return JSON
+
+You can use the directory/ folder traversing and get a `return of a json` as the result. The result will have the complete path of the file in case the file being in the sub directory.
 
 ```
 
@@ -75,6 +77,45 @@ traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, tr
 
 TODO
 
+<!-- 
+
+{
+    search: (d: any, r: any, cb: ((d: any, f: any, searchPattern: any, flag?: undefined) => string | false) | undefined, pe: any, pef: any, type?: string, options?: {
+        search: string;
+        text: never[];
+    }) => void;
+    filter: (d: any, r: any, cb: ((d: any, f: any, searchPattern: any, flag?: undefined) => string | false) | undefined, pe: any, pef: any, type?: string, options?: {
+        search: string;
+        text: never[];
+    }) => void;
+    regex: (d: any, r: any, cb: ((d: any, f: any, searchPattern: any, flag?: undefined) => string | false) | undefined, pe: any, pef: any, type?: string, options?: {
+        regex: string;
+        pattern: null;
+        text: never[];
+    }) => void;
+    dir: (directory: any, recursive: any, fetchModifierCallback: any, handleProcessExit: any, errorHandler: any, type: any, options?: {
+        before: () => void;
+        after: () => void;
+    }) => any;
+    returnNestedArray: (directory: any, recursive: any, fetchModifierCallback: ((directory: any, fileDirent: any) => string) | undefined, handleProcessExit: any, errorHandler: any, type: string | undefined, options: any) => any;
+    returnFlatArray: (directory: any, recursive: any, fetchModifierCallback: ((directory: any, fileDirent: any) => string) | undefined, handleProcessExit: any, errorHandler: any, type: string | undefined, options: any) => any;
+    returnJSON: (directory: any, recursive: any, fetchModifierCallback: ((directory: any, fileDirent: any) => string) | undefined, handleProcessExit: any, errorHandler: any, type: string | undefined, options: any) => any;
+    callbacks: {
+        search: (d: any, f: any, searchPattern: any, flag?: undefined) => string | false;
+        searchFiles: (d: any, f: any, searchPattern: any, flag?: undefined) => string | false;
+        searchFolder: (d: any, f: any, searchPattern: any, flag?: undefined) => string | false;
+        defaultFetch: (directory: any, fileDirent: any) => string;
+        jsonFetch: (directory: any, fileDirent: any) => string;
+        errorHandler: (error: any) => void;
+    };
+    cliArgs: (argList: any) => any;
+} 
+
+-->
+
+
+
+<!-- 
 #### Simple - Simple Search usage with Return Nested Array
 
 TODO
@@ -93,119 +134,111 @@ TODO
 
 #### CLI - Simple CLI Search usage
 
-TODO
+TODO -->
 
 #### API for traverse-fs / fssys
 
-- traverse.dir
+<br/>
 
-Usage with their default implementations:
+- `traverse.dir` Usage Default implementations:
 
 ```
-
     traverse.dir(
-      directory = "./",
-      recursive = false,
-      fetchModifierCallback = traverse.defaultFetch,
-      handleProcessExit = false,
-      errorHandler = traverse.defaultErrorHandler,
-      type = "nestedarray",
-      options = { before: () => { }, after: () => { } }
+      directory = "./",     // directory to traverse
+      recursive = false,    // whether to traverse nested and recursively
+      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
+      handleProcessExit = false,    // any custom process exit handler needed
+      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
+      type = "nestedarray",     // return type of results json, nestedarray, flatarray
+      options = { before: () => { }, after: () => { } }     // any before after handlers
     )
-
 ```
 
-- traverse.returnNestedArray
+<br/>
 
-Usage with their default implementations:
+- `traverse.returnNestedArray` Usage and Default implementations:
+
 
 ```
-
     traverse.returnNestedArray(
-      directory = "./",
-      recursive = false,
-      fetchModifierCallback = traverse.defaultFetch,
-      handleProcessExit = false,
-      errorHandler = traverse.defaultErrorHandler,
-      type = "nestedarray",
-      options = { before: () => { }, after: () => { } }
+      directory = "./",     // directory to traverse
+      recursive = false,    // whether to traverse nested and recursively
+      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
+      handleProcessExit = false,    // any custom process exit handler needed
+      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
+      type = "nestedarray",     // return type of results json, nestedarray, flatarray
+      options = { before: () => { }, after: () => { } }     // any before after handlers
     )
-
 ```
 
-- traverse.returnFlatArray
+<br/>
 
-Usage with their default implementations:
+- `traverse.returnFlatArray` Usage and Default implementations:
 
 ```
-
     traverse.returnFlatArray(
-      directory = "./",
-      recursive = false,
-      fetchModifierCallback = traverse.defaultFetch,
-      handleProcessExit = false,
-      errorHandler = traverse.defaultErrorHandler,
-      type = "flatarray",
-      options = { before: () => { }, after: () => { } }
+      directory = "./",     // directory to traverse
+      recursive = false,    // whether to traverse nested and recursively
+      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
+      handleProcessExit = false,    // any custom process exit handler needed
+      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
+      type = "flatarray",     // return type of results json, nestedarray, flatarray
+      options = { before: () => { }, after: () => { } }     // any before after handlers
     )
-
 ```
 
-- traverse.returnJSON
+<br/>
 
-Usage with their default implementations:
+- `traverse.returnJSON` Usage and Default implementations:
 
 ```
-
     traverse.returnJSON(
-      directory = "./",
-      recursive = false,
-      fetchModifierCallback = traverse.jsonFetch,
-      handleProcessExit = false,
-      errorHandler = traverse.defaultErrorHandler,
-      type = "json",
-      options = { before: () => { }, after: () => { } }
+      directory = "./",     // directory to traverse
+      recursive = false,    // whether to traverse nested and recursively
+      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
+      handleProcessExit = false,    // any custom process exit handler needed
+      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
+      type = "json",     // return type of results json, nestedarray, flatarray
+      options = { before: () => { }, after: () => { } }     // any before after handlers
     )
-
 ```
+
+<br/>
+
+### Default callback implementation
+
+<br/>
 
 - traverse.callbacks
   Usage for traverse.callbacks Function APIs.
 
-  - traverse.callbacks.defaultFetch
-
-Default Implementation:
+  - `traverse.callbacks.defaultFetch` Default Implementations:
 
 ```
-
   (directory, fileDirent) => path.join(directory, fileDirent.name)
+```
+<br/>
+
+- `traverse.callbacks.jsonFetch` Default Implementation:
 
 ```
-
-- traverse.callbacks.jsonFetch
-
-Default Implementation:
-
-```
-
   (directory, fileDirent) => {
       if ((os.type() === "Windows_NT") && fileDirent.name.includes("\\")) {
           return path.join(fileDirent.name.split("\\").at(-1));
       }
       return path.join(fileDirent.name.split("/").at(-1))
   }
-
 ```
 
-- traverse.callbacks.errorHandler
+<br/>
 
-Default Implementation:
+- `traverse.callbacks.errorHandler` Default Implementation:
 
 ```
-
   (error) => console.log(error)
-
 ```
+
+<br/>
 
 While the structure of the callback's returns have to be the same (the file-folder path join names), you can run your own modifier functions on the files and folders as needed and ensure return of file-folder path join names. This allows for changing the files, or folder contents or run any jobs on them, if needed. You can allow for running your own before and after callbacks inside your custom callback functions as needed. It will depend on how you create your custom callback function.
 
@@ -216,14 +249,12 @@ You can use your own callbacks, modifiers, custom jobs, etc like below:
 
 ```
 
-functon cb(directory, fileDirent){
+function cb(directory, fileDirent){
 
   function modifierFunction(d, f) {
 
     specifyBeforeCallback();
-
     /* Your own modifiers, Running custom functions on files or folders, etc. code here*/
-
     specifyAfterCallback();
 
   }
@@ -243,6 +274,7 @@ traverse.dir(
     )
 
 ```
+
 
 - traverse.search [TODO]
 
