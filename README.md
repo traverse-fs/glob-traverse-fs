@@ -21,6 +21,7 @@ You can use `traverse.dir` which by default traverses a single specified folder.
 
 var traverse = require("traverse-fs);
 var path = require("path");
+
 traverse.dir("./").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
@@ -36,6 +37,7 @@ You can use the directory/ folder traversing and get a `return of a nested array
 
 var traverse = require("traverse-fs);
 var path = require("path");
+
 traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "nestedarray").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
@@ -51,6 +53,7 @@ You can use the directory/ folder traversing and get a `return of a single level
 
 var traverse = require("traverse-fs);
 var path = require("path");
+
 traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "flatarray").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
@@ -66,6 +69,7 @@ You can use the directory/ folder traversing and get a `return of a json` as the
 
 var traverse = require("traverse-fs);
 var path = require("path");
+
 traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "json").then(console.log);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
