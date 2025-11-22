@@ -4,18 +4,17 @@
   "description": "Nodejs npm module to traverse folder using code or cli or use glob patterns traverse-cli or traverse-fs or fssys",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "tests": "tests"
   },
   "exports": {
-    "require": "./index.js",
-    "import": "./index.mjs"
+    "require": "./index.js"
   },
   "scripts": {
     "preinstall": "",
     "install": "",
     "postinstall": "",
     "install:cli": "npm install -g traverse-cli --force",
-    "test": "mocha --reporter spec --recursive --config ./mocha.test.config.js"
+    "test": "mocha --reporter spec --recursive --timeout 60000"
   },
   "repository": {
     "type": "git",
@@ -119,10 +118,10 @@
   "homepage": "https://github.com/traverse-fs/glob-traverse-fs#readme",
   "devDependencies": {
     "@types/node": "^18.11.9",
-    "chai": "^4.3.6",
-    "mocha": "^10.1.0",
+    "chai": "^4.5.0",
+    "mocha": "^10.8.2",
     "safe-regex": "^2.1.1",
-    "sinon": "^14.0.1",
+    "sinon": "^14.0.2",
     "unimported": "^1.22.0"
   }
 }
