@@ -24,7 +24,7 @@ const { resolve, join } = path;
  * The callback receives: (fullPath, name, isDirectory).
  * If the callback returns 'false' for a directory, the traversal into that directory is skipped.
  */
-async function traversePath(currentPath, callback) {
+async function traversePath(currentPath, callback, shouldRecurse = true) {
     // 1. Resolve the path to ensure it's absolute
     const fullPath = resolve(currentPath);
 
@@ -51,7 +51,7 @@ async function traversePath(currentPath, callback) {
                 continue;
             }
 
-            let shouldRecurse = true;
+            shouldRecurse = true;
             try {
                 // Execute the user-provided callback and check its return value
                 const result = await callback(entryFullPath, entryName, isDirectory);
@@ -307,5 +307,5 @@ if (require.main === module) {
 }
 
 // Export the main function and utility for use as a library
-module.exports = { traversePath, getDirectorySize, traverseFS };
+module.exports = { traversePath, getDirectorySize, traverseFS, dir: traversePath, search: traverseFS };
 
