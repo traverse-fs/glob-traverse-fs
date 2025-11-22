@@ -7,7 +7,7 @@ Nodejs npm module to traverse files and folder using code, or cli, or use glob p
 <!-- `npm i traverse-cli -g` -->
 <!-- `npm i traverse-cli --save` -->
 
-`npm i fssys --save`
+<!-- `npm i fssys --save` -->
 
 # Usage
 
@@ -37,7 +37,7 @@ You can use the directory/ folder traversing and get a `return of a nested array
 
 var traverse = require("traverse-fs);
 traverse.traversePath("./", console.log, shouldRecurse = true)
-
+// traverse.dir("./", console.log, shouldRecurse = true)
 
 ```
 
@@ -47,13 +47,19 @@ You can use the directory/ folder traversing and get a `return of a single level
 
 ```
 
-var traverse = require("traverse-fs);
+var traversePath = require("traverse-fs").traversePath;
 var path = require("path");
+const TEMP_DIR = resolve('./temp_traversal_root');
+async function main() {
+    const generalCallback = async (path, name, isDir) => { console.log }
+    try {
+        await traversePath(TEMP_DIR, generalCallback);
+    } catch (e) {
+        console.error("Traversal Test 1 failed:", e.message);
+    }
+}
 
-traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "flatarray").then(console.log);
 
-// Alternatively, you can specify specific callbacks of your own and go recursive traversing
-traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "flatarray").then(console.log);
 
 ```
 
@@ -62,20 +68,56 @@ traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, tr
 You can use the directory/ folder traversing and get a `return of a json` as the result. The result will have the complete path of the file in case the file being in the sub directory.
 
 ```
+const userExampleStructure = {
+    "dir": {
+        "dir2": {},
+        "file1": "",
+        "file2": ""
+    }
+};
 
-var traverse = require("traverse-fs);
-var path = require("path");
+const userPaths = flattenStructureToPaths(userExampleStructure);
+userPaths.forEach(p => console.log(p));
 
-traverse.dir("./", false, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "json").then(console.log);
-
-// Alternatively, you can specify specific callbacks of your own and go recursive traversing
-traverse.dir("./", true, (dir, file) => { return path.join(dir, file.name) }, true, (error) => { console.log(error); }, "json").then(console.log);
 
 ```
 
 #### Simple - Simple Search usage
 
-TODO
+```
+
+const fs = require('fs').promises;
+const path = require('path');
+const { resolve, dirname, join } = path;
+const { traversePath, getDirectorySize, traverseFS } = require("../index.js")
+
+
+const foundFiles = [];
+const TEMP_DIR = resolve('./temp_traversal_root');
+const searchCallback = async (path, name, isDir) => {
+    if (!isDir && (name.endsWith('.jsx') || name.endsWith('.js') )) {
+        // Found a match: store it in our results array
+        foundFiles.push(path.replace(dirname(TEMP_DIR), '.'));
+    }
+    // No need for a print statement here, we collect results silently
+};
+
+async function main() {
+    try {
+        // Start search only in the 'src' subdirectory
+        await traversePath(TEMP_DIR, searchCallback);
+
+        console.log(`\nSearch Complete. Found ${foundFiles.length} JSX files:`);
+        foundFiles.forEach(file => console.log(`\t- \x1b[33m${file}\x1b[0m`)); // Yellow
+    } catch (e) {
+        console.error("Traversal Test 2 failed:", e.message);
+    }
+
+}
+
+main()
+
+```
 
 <!-- 
 

@@ -54,7 +54,7 @@ async function main() {
                 console.log(`\n${colorCode}>>> [DIRECTORY ACTION] Initializing project configuration in ${name}${resetCode}`);
             }
         } else if (name.endsWith('.md')) {
-             // Action for a file: read content of markdown files
+            // Action for a file: read content of markdown files
             const content = await fs.readFile(path, 'utf8');
             console.log(`[FILE ACTION] Read ${name}: First 5 chars: "${content.substring(0, 5)}..."`);
         }
@@ -68,7 +68,16 @@ async function main() {
         console.error("Traversal Test 1 failed:", e.message);
     }
 
-    
+
 }
 
 main()
+
+
+
+
+
+
+
+
+

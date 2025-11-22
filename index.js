@@ -675,7 +675,8 @@ module.exports = {
     traversePath,
     getDirectorySize,
     traverseFS,
-    dir: traversePath, search: traverseFS,
+    dir: traversePath, 
+    search: traverseFS,
     getNestedStructure, buildStructure, flattenStructureToPaths,
     processPathsWithReducer,
 };
