@@ -25,7 +25,7 @@ var path = require("path");
 // traverse.dir("./", callback);
 
 // Alternatively, you can specify specific callbacks of your own and go recursive traversing
-traverse.dir("./", (dir, file) => { return path.join(dir, file.name) }).then(console.log);
+traverse.dir("./", (dir, file) => { return path.join(dir, file.name) }, shouldRecurse = true).then(console.log);
 
 ```
 
