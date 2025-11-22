@@ -59,8 +59,6 @@ async function main() {
     }
 }
 
-
-
 ```
 
 #### Simple - Return JSON
@@ -187,65 +185,19 @@ TODO -->
 ```
     traverse.dir(
       directory = "./",     // directory to traverse
+      callback,             // to run
       recursive = false,    // whether to traverse nested and recursively
-      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
-      handleProcessExit = false,    // any custom process exit handler needed
-      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
-      type = "nestedarray",     // return type of results json, nestedarray, flatarray
-      options = { before: () => { }, after: () => { } }     // any before after handlers
+      
     )
 ```
 
 <br/>
-
-- `traverse.returnNestedArray` Usage and Default implementations:
-
-
-```
-    traverse.returnNestedArray(
-      directory = "./",     // directory to traverse
-      recursive = false,    // whether to traverse nested and recursively
-      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
-      handleProcessExit = false,    // any custom process exit handler needed
-      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
-      type = "nestedarray",     // return type of results json, nestedarray, flatarray
-      options = { before: () => { }, after: () => { } }     // any before after handlers
-    )
-```
-
+<!-- 
 <br/>
 
-- `traverse.returnFlatArray` Usage and Default implementations:
+- `traverse.returnFlatArray` Usage and Default implementations: -->
 
-```
-    traverse.returnFlatArray(
-      directory = "./",     // directory to traverse
-      recursive = false,    // whether to traverse nested and recursively
-      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
-      handleProcessExit = false,    // any custom process exit handler needed
-      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
-      type = "flatarray",     // return type of results json, nestedarray, flatarray
-      options = { before: () => { }, after: () => { } }     // any before after handlers
-    )
-```
-
-<br/>
-
-- `traverse.returnJSON` Usage and Default implementations:
-
-```
-    traverse.returnJSON(
-      directory = "./",     // directory to traverse
-      recursive = false,    // whether to traverse nested and recursively
-      fetchModifierCallback = traverse.defaultFetch,    // any custom result modifiers handler needed
-      handleProcessExit = false,    // any custom process exit handler needed
-      errorHandler = traverse.defaultErrorHandler,    // any custom error handler needed
-      type = "json",     // return type of results json, nestedarray, flatarray
-      options = { before: () => { }, after: () => { } }     // any before after handlers
-    )
-```
-
-<br/>
+<!-- 
 
 ### Default callback implementation
 
@@ -324,7 +276,7 @@ traverse.dir(
 
 - traverse.regex [TODO]
 
-- traverse.cliargs [TODO]
+- traverse.cliargs [TODO] -->
 
 # Contribution
 
