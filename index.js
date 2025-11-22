@@ -98,6 +98,60 @@ async function getDirectorySize(dirPath) {
     return totalSize;
 }
 
+
+// ----------------------------------------------------------------------
+// 3. traverseFS: Encapsulated Search (Specific File/Folder Name)
+// ----------------------------------------------------------------------
+/**
+ * Traverses an array of file system paths, searching for a specific file name 
+ * and/or a specific directory name.
+ * * @param {string[]|string} paths - An array of starting paths (directories or files) to traverse, 
+ * or a single path string.
+ * @param {object} searchConfig - Configuration object for the search.
+ * @param {string} [searchConfig.targetFile] - The name of the file to search for.
+ * @param {string} [searchConfig.targetDir] - The name of the directory to search for.
+ * @returns {Promise<{filesFound: string[], dirsFound: string[]}>} - A promise that resolves to an object 
+ * containing arrays of full paths for found files and directories.
+ */
+async function traverseFS(paths, searchConfig) {
+    const filesFound = [];
+    const dirsFound = [];
+    const { targetFile, targetDir } = searchConfig;
+
+    // Normalize input: ensure paths is always an array
+    if (!Array.isArray(paths)) {
+        paths = [paths];
+    }
+
+    // The callback implementation:
+    const searchCallback = async (fullPath, name, isDirectory) => {
+        // Check for target file match
+        if (!isDirectory && targetFile && name === targetFile) {
+            filesFound.push(fullPath);
+        }
+
+        // Check for target directory match
+        if (isDirectory && targetDir && name === targetDir) {
+            dirsFound.push(fullPath);
+        }
+        
+        // Continue traversal (return true implicitly)
+        return true; 
+    };
+
+    // Iterate over all provided starting paths, using the core traversePath utility
+    for (const startingPath of paths) {
+        // traversePath handles logging errors for non-existent startingPath
+        await traversePath(startingPath, searchCallback);
+    }
+
+    // Ensure results are unique
+    const uniqueFiles = [...new Set(filesFound)];
+    const uniqueDirs = [...new Set(dirsFound)];
+
+    return { filesFound: uniqueFiles, dirsFound: uniqueDirs };
+}
+
 // The main function that sets up and runs the demonstration
 async function main() {
     console.log('--- Starting File System Traverser Demo (CommonJS) ---');
@@ -219,8 +273,9 @@ async function main() {
 
 // Run the demonstration if the file is executed directly (CommonJS check)
 if (require.main === module) {
-    main();
+    // main();
 }
 
 // Export the main function and utility for use as a library
-module.exports = { traversePath, getDirectorySize };
+module.exports = { traversePath, getDirectorySize, traverseFS };
+
