@@ -51,7 +51,8 @@ async function traversePath(currentPath, callback, shouldRecurse = true) {
                 continue;
             }
 
-            shouldRecurse = true;
+            // needed if inside assignation or argument for function
+            // shouldRecurse = false;
             try {
                 // Execute the user-provided callback and check its return value
                 const result = await callback(entryFullPath, entryName, isDirectory);
@@ -179,8 +180,371 @@ async function traverseFS(paths, searchConfig, userCallback) {
 }
 
 
-// Export the main function and utility for use as a library
-module.exports = { traversePath, getDirectorySize, traverseFS };
+// ----------------------------------------------------------------------
+// 4. getNestedStructure: Tree Building Function
+// ----------------------------------------------------------------------
+/**
+ * Recursively traverses a file system path and returns the result as a nested array (tree structure).
+ * Each node in the tree is an object: { name, fullPath, isDirectory, children: []|null }.
+ *
+ * @param {string} rootPath - The starting path to build the tree from.
+ * @returns {Promise<object[]|null>} - A promise that resolves to the array of child nodes of the root path,
+ * or null if the root path is inaccessible.
+ */
+async function getNestedStructure(rootPath) {
+    const fullRootPath = resolve(rootPath);
+    // Map to store nodes by full path for O(1) parent lookup
+    const pathMap = new Map();
+
+    // 1. Initialize the root node manually (since traversePath excludes the root itself)
+    let rootNode;
+    try {
+        const stats = await fs.stat(fullRootPath);
+        rootNode = {
+            // Use base name for display, or full path if it's the root of the file system
+            name: path.basename(fullRootPath) || fullRootPath,
+            fullPath: fullRootPath,
+            isDirectory: stats.isDirectory(),
+            children: []
+        };
+        // Store the root node so children can attach to it
+        pathMap.set(fullRootPath, rootNode);
+    } catch (e) {
+        console.error(`Error initializing root path ${fullRootPath}: ${e.message}`);
+        return null;
+    }
+
+    // Callback function to build the tree structure
+    const treeBuilderCallback = async (fullPath, name, isDirectory) => {
+        // Find the parent's full path
+        const parentPath = path.dirname(fullPath);
+
+        // Create the current node structure
+        const currentNode = {
+            name: name,
+            fullPath: fullPath,
+            isDirectory: isDirectory,
+            children: isDirectory ? [] : null // Only directories have children
+        };
+
+        // 2. Add current node to the map for future lookups (when it becomes a parent)
+        pathMap.set(fullPath, currentNode);
+
+        // 3. Append the current node to its parent's children array
+        const parentNode = pathMap.get(parentPath);
+        if (parentNode && parentNode.children) {
+            parentNode.children.push(currentNode);
+        }
+
+        return true; // Always continue traversal
+    };
+
+    // Use the core traversePath function to populate the structure
+    await traversePath(fullRootPath, treeBuilderCallback);
+
+    // Return the array of nodes directly under the root path
+    return rootNode.children;
+}
+
+// // ----------------------------------------------------------------------
+// // 1. flattenStructureToPaths: Converts Tree Object to Flat Path Array
+// // ----------------------------------------------------------------------
+// /**
+//  * Recursively traverses a nested object representing a file/directory structure
+//  * and returns a flattened array of all file paths.
+//  *
+//  * The structure is expected to use:
+//  * - Object values ({}) for directories.
+//  * - Empty string values ("") for files.
+//  *
+//  * @param {object} fileStructure - The current directory contents object.
+//  * @param {string} [currentPath=''] - The path built up so far (used for recursion).
+//  * @returns {string[]} - A list of fully qualified file paths (strings).
+//  */
+// function flattenStructureToPaths(fileStructure, currentPath = '') {
+//     const allPaths = [];
+
+//     // Check if the input is a valid object (directory)
+//     if (typeof fileStructure !== 'object' || fileStructure === null || Array.isArray(fileStructure)) {
+//         return allPaths;
+//     }
+
+//     // Iterate over the properties (names) of the current directory level
+//     for (const name in fileStructure) {
+//         if (fileStructure.hasOwnProperty(name)) {
+//             const content = fileStructure[name];
+
+//             // Construct the full path for the current item
+//             const fullPath = join(currentPath, name);
+
+//             if (typeof content === 'object' && content !== null && !Array.isArray(content)) {
+//                 // Case 1: If content is an object, it's a directory.
+//                 // Recursively call the function and merge the results.
+//                 const subPaths = flattenStructureToPaths(content, fullPath);
+//                 allPaths.push(...subPaths);
+//             } else if (content === "") {
+//                 // Case 2: If content is an empty string, it's a file.
+//                 allPaths.push(fullPath);
+//             }
+//             // Other types are ignored, maintaining the strict file/dir structure.
+//         }
+//     }
+
+//     return allPaths;
+// }
+
+// ----------------------------------------------------------------------
+// 2. getDirectorySize: Calculates the total size of files in a directory tree.
+// ----------------------------------------------------------------------
+
+/**
+ * Calculates the total size (in bytes) of all files within a directory and its subdirectories.
+ *
+ * @param {string} rootPath - The starting directory path.
+ * @returns {Promise<number>} A promise resolving to the total size in bytes.
+ */
+async function getDirectorySize(rootPath) {
+    let totalSize = 0;
+
+    const sizeCallback = async (fullPath, name, isDir) => {
+        if (!isDir) {
+            try {
+                const stats = await fs.stat(fullPath);
+                totalSize += stats.size;
+            } catch (error) {
+                console.error(`Error accessing entry ${fullPath}: ${error.message}`);
+            }
+        }
+        return true; // Always continue traversal
+    };
+
+    await traversePath(rootPath, sizeCallback);
+    return totalSize;
+}
+
+// ----------------------------------------------------------------------
+// 3. traverseFS: Encapsulated file/dir search utility.
+// ----------------------------------------------------------------------
+
+/**
+ * Searches for specific files and/or directories within a root path (or array of paths).
+ *
+ * @param {string|string[]} rootPaths - The starting path(s).
+ * @param {{targetFile?: string, targetDir?: string}} searchConfig - Configuration object for file/dir names to find.
+ * @param {Function} [userCallback] - Optional callback (fullPath, name, isDir) to run on successful match.
+ * @returns {Promise<{filesFound: string[], dirsFound: string[]}>}
+ */
+async function traverseFS(rootPaths, searchConfig, userCallback = async () => { }) {
+    const filesFound = [];
+    const dirsFound = [];
+
+    const searchCallback = async (fullPath, name, isDir) => {
+        let isMatch = false;
+
+        if (!isDir && searchConfig.targetFile === name) {
+            filesFound.push(fullPath);
+            isMatch = true;
+        } else if (isDir && searchConfig.targetDir === name) {
+            dirsFound.push(fullPath);
+            isMatch = true;
+        }
+
+        if (isMatch) {
+            try {
+                await userCallback(fullPath, name, isDir);
+            } catch (error) {
+                console.error(`Error in user callback within traverseFS for ${fullPath}: ${error.message}`);
+            }
+        }
+        return true; // Always continue searching
+    };
+
+    const pathsToTraverse = Array.isArray(rootPaths) ? rootPaths : [rootPaths];
+
+    for (const p of pathsToTraverse) {
+        await traversePath(p, searchCallback);
+    }
+
+    return { filesFound, dirsFound };
+}
+
+
+// ====================================================================
+// NESTED STRUCTURE BUILDING (from previous interactions)
+// ====================================================================
+
+/**
+ * Recursive Helper for File System Traversal (Used by getNestedStructure)
+ *
+ * @param {string} currentDirPath - The current directory to traverse.
+ * @returns {Promise<Array<object>>} - A promise resolving to an array of Node objects.
+ */
+async function buildStructure(currentDirPath) {
+    try {
+        const entries = await fs.readdir(currentDirPath, { withFileTypes: true });
+
+        const children = [];
+        for (const entry of entries) {
+            // Ignore hidden files (dot files)
+            if (entry.name.startsWith('.')) continue;
+
+            const fullPath = join(currentDirPath, entry.name);
+            const isDir = entry.isDirectory();
+
+            if (isDir) {
+                // Recursively build children structure
+                const grandChildren = await buildStructure(fullPath);
+                children.push(Node(entry.name, fullPath, true, grandChildren));
+            } else {
+                // File node
+                children.push(Node(entry.name, fullPath, false));
+            }
+        }
+        return children;
+
+    } catch (error) {
+        // Log error accessing this specific path and return an empty array, allowing traversal to continue higher up.
+        console.error(`Error accessing path ${currentDirPath}: ${error.message}`);
+        return [];
+    }
+}
+
+/**
+ * Recursively traverses a file system path and builds a nested JSON structure.
+ *
+ * @param {string} rootPath - The starting directory path.
+ * @returns {Promise<Array<object> | null>} A promise that resolves to an array of file/directory nodes (children of root), or null on failure.
+ */
+async function getNestedStructure(rootPath) {
+    try {
+        const stats = await fs.stat(rootPath);
+        if (!stats.isDirectory()) {
+            console.error(`Error initializing root path: ${rootPath} is not a directory.`);
+            return null;
+        }
+
+        // The root itself is not included, only its children are returned.
+        const structure = await buildStructure(rootPath);
+        return structure;
+
+    } catch (error) {
+        console.error(`Error initializing root path: ${error.message}`);
+        return null;
+    }
+}
+
+
+// ====================================================================
+// IN-MEMORY STRUCTURE TRAVERSAL
+// ====================================================================
+
+/**
+ * Recursively traverses a nested object representing a file/directory structure
+ * and returns a flattened array of all file paths.
+ * (Operates on in-memory objects, not the real filesystem)
+ *
+ * @param {object} fileStructure - The current directory contents object.
+ * @param {string} [currentPath=''] - The path built up so far (used for recursion).
+ * @returns {string[]} - A list of fully qualified file paths (strings).
+ */
+function flattenStructureToPaths(fileStructure, currentPath = '') {
+    const allPaths = [];
+
+    if (typeof fileStructure !== 'object' || fileStructure === null || Array.isArray(fileStructure)) {
+        return allPaths;
+    }
+
+    for (const name in fileStructure) {
+        if (fileStructure.hasOwnProperty(name)) {
+            const content = fileStructure[name];
+            const fullPath = join(currentPath, name);
+
+            if (typeof content === 'object' && content !== null && !Array.isArray(content)) {
+                const subPaths = flattenStructureToPaths(content, fullPath);
+                allPaths.push(...subPaths);
+            } else if (content === "") {
+                allPaths.push(fullPath);
+            }
+        }
+    }
+
+    return allPaths;
+}
+
+
+/**
+ * path-reducer.js
+ * * Utility function to process an array of file paths sequentially
+ * using an asynchronous reducer function.
+ */
+
+// ----------------------------------------------------------------------
+// Core Utility Function
+// ----------------------------------------------------------------------
+
+/**
+ * Sequentially processes an array of paths using an asynchronous reducer function.
+ * * This implementation is robust against asynchronous operations within the 
+ * reducer, ensuring each step completes before the next path is processed.
+ *
+ * @param {string[]} paths - The array of paths to process.
+ * @param {Function} reducerFunction - The async function to execute on each path.
+ * Signature: (accumulator, currentPath, index, array) => Promise<any>
+ * @param {any} initialValue - The initial value for the accumulator.
+ * @returns {Promise<any>} A promise that resolves to the final accumulated value.
+ */
+async function processPathsWithReducer(paths, reducerFunction, initialValue) {
+    if (!Array.isArray(paths)) {
+        throw new Error('The "paths" argument must be an array.');
+    }
+
+    // Use reduce to iterate sequentially and handle asynchronous logic
+    // We initialize the accumulator with Promise.resolve(initialValue) 
+    // to start the promise chain.
+    return paths.reduce(async (accumulatorPromise, currentPath, index, array) => {
+        // 1. Wait for the accumulator (the result of the previous step) to resolve
+        const accumulator = await accumulatorPromise;
+
+        // 2. Execute the user's asynchronous reducer function
+        // Note: The reducerFunction itself must return a Promise (or an async function)
+        const nextAccumulator = await reducerFunction(accumulator, currentPath, index, array);
+
+        // 3. Return the new promise chain link
+        return nextAccumulator;
+    }, Promise.resolve(initialValue)); // Start with a resolved promise of the initial value
+}
+
+
+// ----------------------------------------------------------------------
+// Example Usage
+// ----------------------------------------------------------------------
+
+// Example: Simulating a slow file processing operation (e.g., calculating checksums)
+// change the below function to run on every file path or entry
+// 
+async function simulateProcessFile(path) {
+    // Simulate a network/disk delay
+    await new Promise(resolve => setTimeout(resolve, 50));
+    const result = `Processed_${path.toUpperCase()}`;
+    console.log(`\t-> Finished: ${path}`);
+    return result;
+}
+
+// Example Reducer: Count and concatenate the results of processing all paths
+async function pathReducer(processedResults, currentPath, index) {
+    console.log(`Starting path ${index + 1}: ${currentPath}`);
+
+    // Call the simulated async operation
+    const result = await simulateProcessFile(currentPath);
+
+    // Accumulate the result
+    processedResults.count++;
+    processedResults.log.push(result);
+
+    return processedResults;
+}
+
+
 
 // The main function that sets up and runs the demonstration
 async function main() {
@@ -307,5 +671,12 @@ if (require.main === module) {
 }
 
 // Export the main function and utility for use as a library
-module.exports = { traversePath, getDirectorySize, traverseFS, dir: traversePath, search: traverseFS };
+module.exports = {
+    traversePath,
+    getDirectorySize,
+    traverseFS,
+    dir: traversePath, search: traverseFS,
+    getNestedStructure, buildStructure, flattenStructureToPaths,
+    processPathsWithReducer,
+};
 
