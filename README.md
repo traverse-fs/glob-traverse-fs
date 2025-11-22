@@ -13,7 +13,7 @@ Nodejs npm module to traverse files and folder using code, or cli, or use glob p
 
 The API of traverse-fs can be used to traverse a folder or its subfolders recursively.
 
-All the demos codes are here: [demos](https://github.com/traverse-fs/glob-traverse-fs/tree/main/demos)
+All the demos codes are here in the github demos folder: [demos](https://github.com/traverse-fs/glob-traverse-fs/tree/main/demos)
 
 #### Simple - Usage
 

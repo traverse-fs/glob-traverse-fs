@@ -677,7 +677,9 @@ module.exports = {
     traverseFS,
     dir: traversePath, 
     search: traverseFS,
-    getNestedStructure, buildStructure, flattenStructureToPaths,
+    getNestedStructure, 
+    buildStructure, 
+    flattenStructureToPaths,
     processPathsWithReducer,
 };
 
