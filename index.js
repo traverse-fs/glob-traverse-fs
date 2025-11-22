@@ -3,12 +3,19 @@
  *
  * A lightweight, recursive file system traverser for Node.js using CommonJS modules.
  * It uses the 'fs.promises' API for modern asynchronous handling.
+ *
+ * Exports:
+ * 1. traversePath: The core recursive engine with custom callback support.
+ * 2. getDirectorySize: A utility built on traversePath to calculate total file size.
+ * 3. traverseFS: A utility built on traversePath for multi-path, encapsulated search, 
+ * now supporting an optional execution callback.
  */
 const fs = require('fs').promises;
 const path = require('path');
-const { resolve, dirname, join } = path;
+const { resolve, join } = path;
 
 /**
+ * 1. traversePath: The Core Engine (Traverse and Run a Generic Function)
  * Recursively traverses a file system path, executing a callback function
  * for every file and directory encountered.
  *
@@ -26,12 +33,12 @@ async function traversePath(currentPath, callback) {
         let names = await fs.readdir(fullPath);
 
         // Filter out dot-files and hidden entries (e.g., .DS_Store, .git)
-        names = names.filter(name => !name.startsWith('.')); // <-- FIX: Filter out hidden files
-        
+        names = names.filter(name => !name.startsWith('.'));
+
         // 3. Process each entry name
         for (const entryName of names) {
             const entryFullPath = join(fullPath, entryName);
-            
+
             // We rely solely on fs.stat for reliable file/directory type checking.
             let isDirectory = false;
             try {
@@ -39,22 +46,22 @@ async function traversePath(currentPath, callback) {
                 isDirectory = stats.isDirectory();
             } catch (statError) {
                 // If fs.stat fails (e.g., permissions issue, unreadable symlink), log and skip it.
-                // This ensures traversal continues (Test 4.2, 4.4).
+                // This is crucial for handling unreadable files/symlinks gracefully.
                 console.error(`Error accessing entry ${entryFullPath}: ${statError.message}`);
-                continue; 
+                continue;
             }
 
             let shouldRecurse = true;
             try {
                 // Execute the user-provided callback and check its return value
                 const result = await callback(entryFullPath, entryName, isDirectory);
-                
+
                 // If the callback returns false for a directory, stop recursion here.
                 if (result === false && isDirectory) {
                     shouldRecurse = false;
                 }
             } catch (cbError) {
-                // Catch errors thrown by the user's callback function (Test 4.3).
+                // Catch errors thrown by the user's callback function.
                 console.error(`Error in user callback for path ${entryFullPath}: ${cbError.message}`);
                 // Continue traversal after a callback failure
             }
@@ -66,38 +73,41 @@ async function traversePath(currentPath, callback) {
         }
 
     } catch (error) {
-        // Log errors but gracefully exit the traversal if the path is inaccessible (Test 4.1, 4.2).
+        // Log errors but gracefully exit the traversal if the path is inaccessible (e.g., not a directory).
         console.error(`Error accessing path ${fullPath}: ${error.message}`);
     }
 }
 
 // ----------------------------------------------------------------------
-// Example Usage and Self-Contained Test
+// 2. getDirectorySize: Search and Run Function (Specific Task Example)
 // ----------------------------------------------------------------------
-
-// A utility function used for the "Run a Command" test (Test 3)
+/**
+ * Calculates the total size (in bytes) of all files within a directory and its subdirectories.
+ * This is a specific search and run function built on traversePath.
+ * * @param {string} dirPath - The directory path to calculate the size of.
+ * @returns {Promise<number>} - The total size in bytes.
+ */
 async function getDirectorySize(dirPath) {
     let totalSize = 0;
 
+    // The callback implementation:
     const sizeCallback = async (path, name, isDir) => {
-        // Only calculate size for files, not directories
         if (!isDir) {
             try {
-                // Use fs.stat to get file metadata, specifically size
                 const stats = await fs.stat(path);
                 totalSize += stats.size;
             } catch (e) {
-                // If a file cannot be accessed (e.g., permissions or fs.stat failure), skip it (Test 3.5).
-                console.error(`Error accessing path ${path}: ${e.message}`);
+                // Handle file stat errors gracefully
+                // This error handler is technically redundant because traversePath handles stat errors
+                // and skips the entry, but kept for explicit clarity in a utility function.
+                console.error(`Error accessing file for size calculation ${path}: ${e.message}`);
             }
         }
-        // Always return true (or nothing) to continue recursion for size calculation
     };
 
     await traversePath(dirPath, sizeCallback);
     return totalSize;
 }
-
 
 // ----------------------------------------------------------------------
 // 3. traverseFS: Encapsulated Search (Specific File/Folder Name)
@@ -110,10 +120,12 @@ async function getDirectorySize(dirPath) {
  * @param {object} searchConfig - Configuration object for the search.
  * @param {string} [searchConfig.targetFile] - The name of the file to search for.
  * @param {string} [searchConfig.targetDir] - The name of the directory to search for.
+ * @param {function(string, string, boolean): Promise<any>} [userCallback] - Optional function to run 
+ * for any file/folder that matches the search criteria.
  * @returns {Promise<{filesFound: string[], dirsFound: string[]}>} - A promise that resolves to an object 
  * containing arrays of full paths for found files and directories.
  */
-async function traverseFS(paths, searchConfig) {
+async function traverseFS(paths, searchConfig, userCallback) {
     const filesFound = [];
     const dirsFound = [];
     const { targetFile, targetDir } = searchConfig;
@@ -125,18 +137,32 @@ async function traverseFS(paths, searchConfig) {
 
     // The callback implementation:
     const searchCallback = async (fullPath, name, isDirectory) => {
+        let isMatch = false;
+
         // Check for target file match
         if (!isDirectory && targetFile && name === targetFile) {
             filesFound.push(fullPath);
+            isMatch = true;
         }
 
         // Check for target directory match
         if (isDirectory && targetDir && name === targetDir) {
             dirsFound.push(fullPath);
+            isMatch = true;
         }
-        
+
+        // Execute the optional user callback if the entry matched the criteria
+        if (isMatch && userCallback) {
+            try {
+                // Pass the entry details to the user-provided callback
+                await userCallback(fullPath, name, isDirectory);
+            } catch (cbError) {
+                console.error(`Error in user callback within traverseFS for ${fullPath}: ${cbError.message}`);
+            }
+        }
+
         // Continue traversal (return true implicitly)
-        return true; 
+        return true;
     };
 
     // Iterate over all provided starting paths, using the core traversePath utility
@@ -151,6 +177,10 @@ async function traverseFS(paths, searchConfig) {
 
     return { filesFound: uniqueFiles, dirsFound: uniqueDirs };
 }
+
+
+// Export the main function and utility for use as a library
+module.exports = { traversePath, getDirectorySize, traverseFS };
 
 // The main function that sets up and runs the demonstration
 async function main() {
@@ -202,7 +232,7 @@ async function main() {
                 console.log(`\n${colorCode}>>> [DIRECTORY ACTION] Initializing project configuration in ${name}${resetCode}`);
             }
         } else if (name.endsWith('.md')) {
-             // Action for a file: read content of markdown files
+            // Action for a file: read content of markdown files
             const content = await fs.readFile(path, 'utf8');
             console.log(`[FILE ACTION] Read ${name}: First 5 chars: "${content.substring(0, 5)}..."`);
         }
