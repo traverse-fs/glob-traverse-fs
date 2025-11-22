@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const { isValidFilePathStructure, arePathsSame, normalizePath } = require('../valid.structure'); 
+const { isValidFilePathStructure, arePathsSame, normalizePath } = require('../valid.pathing'); 
 
 // Note: In a real Node.js environment, you would need to install:
 // npm install mocha chai --save-dev
