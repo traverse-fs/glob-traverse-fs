@@ -68,59 +68,7 @@ async function main() {
         console.error("Traversal Test 1 failed:", e.message);
     }
 
-    // ====================================================================
-    // TEST 2: Search a Directory (Filtering)
-    // ====================================================================
-    console.log('\n========================================================');
-    console.log('TEST 2: Search Directory for Specific Extensions (.jsx)');
-    console.log('========================================================');
-
-    const foundFiles = [];
-    const searchCallback = async (path, name, isDir) => {
-        if (!isDir && name.endsWith('.jsx')) {
-            // Found a match: store it in our results array
-            foundFiles.push(path.replace(dirname(TEMP_DIR), '.'));
-        }
-        // No need for a print statement here, we collect results silently
-    };
-
-    try {
-        // Start search only in the 'src' subdirectory
-        await traversePath(SUB_DIR_A, searchCallback);
-
-        console.log(`\nSearch Complete. Found ${foundFiles.length} JSX files:`);
-        foundFiles.forEach(file => console.log(`\t- \x1b[33m${file}\x1b[0m`)); // Yellow
-    } catch (e) {
-        console.error("Traversal Test 2 failed:", e.message);
-    }
-
-
-    // ====================================================================
-    // TEST 3: Run a Command for a Directory (Calculate Total Size)
-    // ====================================================================
-    console.log('\n========================================================');
-    console.log('TEST 3: Run Command - Calculate Directory Size (byte count)');
-    console.log('========================================================');
-
-    try {
-        const sizeInBytes = await getDirectorySize(TEMP_DIR);
-        const sizeInKB = (sizeInBytes / 1024).toFixed(2);
-        console.log(`\nTotal Size of ${path.basename(TEMP_DIR)}:`);
-        console.log(`\t- \x1b[36m${sizeInBytes}\x1b[0m bytes`); // Cyan
-        console.log(`\t- \x1b[36m${sizeInKB}\x1b[0m KB (approx)`);
-    } catch (e) {
-        console.error("Traversal Test 3 failed:", e.message);
-    }
-
-
-    // 4. Cleanup: Remove the temporary directory
-    try {
-        console.log('\n--- Cleaning up temporary files ---');
-        await fs.rm(TEMP_DIR, { recursive: true, force: true });
-        console.log('Cleanup complete. Directory structure removed.');
-    } catch (e) {
-        console.error("Cleanup failed:", e.message);
-    }
+    
 }
 
 main()
